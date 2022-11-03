@@ -1,4 +1,6 @@
+#imports the pygame module which allows the program to run
 import pygame 
+#imports everything from the settings.py file
 from settings import *
 
 class Player(pygame.sprite.Sprite):
