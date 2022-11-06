@@ -1,4 +1,4 @@
-Original files for this project were taken from clear-code-projects with their permission
+Original files for this project were taken from clear-code-projects with their permission.
 
 This project is published under the Creative Commons Zero (CC0) license. 
 
