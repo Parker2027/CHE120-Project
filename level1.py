@@ -1,6 +1,10 @@
+#imports the pygame module
 import pygame 
+#imports everything about game window settings from settings1.py into level1.py
 from settings import *
+#imports Tile from tile1.py into level1.py
 from tile import Tile
+#imports Player from player1.py
 from player import Player
 
 
