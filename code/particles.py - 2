@@ -1,29 +1,32 @@
+# imports the pygame module
 import pygame
+# imports "import_folder" from support.py
 from support import import_folder
+# imports the function choice() from the random module
 from random import choice
 
 class AnimationPlayer:
 	def __init__(self):
 		self.frames = {
-			# magic
+			# imports the .png files for the graphics for the magic effects
 			'flame': import_folder('../graphics/particles/flame/frames'),
 			'aura': import_folder('../graphics/particles/aura'),
 			'heal': import_folder('../graphics/particles/heal/frames'),
 			
-			# attacks 
+			# imports the .png files for the graphics for the physical attacks
 			'claw': import_folder('../graphics/particles/claw'),
 			'slash': import_folder('../graphics/particles/slash'),
 			'sparkle': import_folder('../graphics/particles/sparkle'),
 			'leaf_attack': import_folder('../graphics/particles/leaf_attack'),
 			'thunder': import_folder('../graphics/particles/thunder'),
 
-			# monster deaths
+			# imports the .png files for the graphics for enemy deaths
 			'squid': import_folder('../graphics/particles/smoke_orange'),
 			'raccoon': import_folder('../graphics/particles/raccoon'),
 			'spirit': import_folder('../graphics/particles/nova'),
 			'bamboo': import_folder('../graphics/particles/bamboo'),
 			
-			# leafs 
+			# imports the .png files for the graphics for the leafs 
 			'leaf': (
 				import_folder('../graphics/particles/leaf1'),
 				import_folder('../graphics/particles/leaf2'),
