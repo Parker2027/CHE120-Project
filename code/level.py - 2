@@ -1,17 +1,32 @@
+# Imports the pygame module
 import pygame 
+# Imports everything from the file settings.py
 from settings import *
+# Imports class Tile from the file tile.py
 from tile import Tile
+# Imports class Player from the file player.py
 from player import Player
+# Imports debug from the file depug.py
 from debug import debug
+# Imports everything from the file support.py
 from support import *
+# Imports choice and randint from the module random
 from random import choice, randint
+# Imports class Weapon from the file weapon.py
 from weapon import Weapon
+# Imports class UI from the file ui.py
 from ui import UI
+# Imports class Enemy from the file enemy.py
 from enemy import Enemy
+# Imports class AnimationPlayer from file particles.py
 from particles import AnimationPlayer
+
+# Imports class MagicPlayer from file magic.py
 from magic import MagicPlayer
+# Imports class Upgrade from file upgrade.py
 from upgrade import Upgrade
 
+# Creates class Level
 class Level:
 	def __init__(self):
 
