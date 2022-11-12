@@ -28,10 +28,13 @@ from upgrade import Upgrade
 
 # Creates class Level
 class Level:
+# Initiates the class (allows the class to contain arguments)
 	def __init__(self):
 
 		# get the display surface 
+		# Creates the display (video)
 		self.display_surface = pygame.display.get_surface()
+		# Sets 
 		self.game_paused = False
 
 		# sprite group setup
