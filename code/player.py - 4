@@ -11,8 +11,8 @@ class Player(Entity):
 		self.hitbox = self.rect.inflate(-6,HITBOX_OFFSET['player'])
 
 		# graphics setup
-		self.import_player_assets()
-		self.status = 'down'
+		self.import_player_assets()  
+		self.status = 'down' #Default for starting the game is character facing down
 
 		# movement 
 		self.attacking = False
