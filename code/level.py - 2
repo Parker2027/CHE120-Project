@@ -34,7 +34,7 @@ class Level:
 		# get the display surface 
 		# Creates the display (video)
 		self.display_surface = pygame.display.get_surface()
-		# Sets 
+		# Sets the default game to not be paused
 		self.game_paused = False
 
 		# sprite group setup
@@ -51,7 +51,7 @@ class Level:
 
 		# user interface 
 		self.ui = UI()
-		# Defines self.upgrade
+		# The level can update as the game progresses
 		self.upgrade = Upgrade(self.player)
 
 		# particles
@@ -73,6 +73,7 @@ class Level:
 			'objects': import_folder('../graphics/objects')
 		}
 
+		# Do the following when style and layot exist in layouts.items()
 		for style,layout in layouts.items():
 			for row_index,row in enumerate(layout):
 				for col_index, col in enumerate(row):
@@ -115,12 +116,14 @@ class Level:
 									self.damage_player,
 									self.trigger_death_particles,
 									self.add_exp)
-
+	# Creates function create_attack which 
 	def create_attack(self):
-		
+		# 
 		self.current_attack = Weapon(self.player,[self.visible_sprites,self.attack_sprites])
 
+	# Creates function create_magic with arguments "Self", "Style", "Strength" and "Cost"
 	def create_magic(self,style,strength,cost):
+		# 
 		if style == 'heal':
 			self.magic_player.heal(self.player,strength,cost,[self.visible_sprites])
 
