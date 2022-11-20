@@ -28,7 +28,7 @@ from upgrade import Upgrade
 
 # Creates class Level
 class Level:
-# Initiates the class (allows the class to contain arguments)
+	# Initiates the class (allows the class to contain arguments)
 	def __init__(self):
 
 		# get the display surface 
@@ -51,19 +51,23 @@ class Level:
 
 		# user interface 
 		self.ui = UI()
+		# Defines self.upgrade
 		self.upgrade = Upgrade(self.player)
 
 		# particles
 		self.animation_player = AnimationPlayer()
 		self.magic_player = MagicPlayer(self.animation_player)
-
+		
+	# Creates function create_map with argument "Self"
 	def create_map(self):
+		# Map layout is defined with the following csv files
 		layouts = {
 			'boundary': import_csv_layout('../map/map_FloorBlocks.csv'),
 			'grass': import_csv_layout('../map/map_Grass.csv'),
 			'object': import_csv_layout('../map/map_Objects.csv'),
 			'entities': import_csv_layout('../map/map_Entities.csv')
 		}
+		# Level graphics are defined by the following files
 		graphics = {
 			'grass': import_folder('../graphics/Grass'),
 			'objects': import_folder('../graphics/objects')
@@ -123,11 +127,13 @@ class Level:
 		if style == 'flame':
 			self.magic_player.flame(self.player,cost,[self.visible_sprites,self.attack_sprites])
 
+	Creates function destroy_attack with argument "Self"
 	def destroy_attack(self):
 		if self.current_attack:
 			self.current_attack.kill()
 		self.current_attack = None
 
+	Creates function player_attack_logic with argument "Self"
 	def player_attack_logic(self):
 		if self.attack_sprites:
 			for attack_sprite in self.attack_sprites:
@@ -173,7 +179,7 @@ class Level:
 			self.visible_sprites.enemy_update(self.player)
 			self.player_attack_logic()
 		
-
+# Creates class YSortCameraGroup
 class YSortCameraGroup(pygame.sprite.Group):
 	def __init__(self):
 
