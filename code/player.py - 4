@@ -1,3 +1,12 @@
+#This was commented by Luc Bourassa, ID 21027232
+
+#For all comments to this module, the word player refers to the user providing input, while the word character refers
+#to the in game rendition of the model that carries out these commands.
+
+#This module is for all things regarding the character including player input, basic animations, abilities, and stats.
+#Starts by bringing in other functions and variables from the settings, support, and entity modules
+#These are for use in this module and most regard variables surrounding the character model and its potential states.
+
 import pygame 
 from settings import *
 from support import import_folder
