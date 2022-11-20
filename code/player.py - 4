@@ -13,67 +13,71 @@ from support import import_folder
 from entity import Entity
 
 class Player(Entity):
+# A class for functions regarding everything the character can do
+#This involves attacking, moving, standing still, using magic, and taking damage
+
 	def __init__(self,pos,groups,obstacle_sprites,create_attack,destroy_attack,create_magic):
-	#This function is used to update every aspect of the character regarding its different possible states
+	#This function is used to initialize every aspect of the character regarding its different possible states at the start of the game
 	#There are 12 states in total: 4 for attacking (1 in each direction), 4 for moving (1 in each direction) and 4 for standing still(1 in each direction
 	#All of these parts deal with these states in one way or another, and allow the player to continually provide input for the character with response
 	
-		super().__init__(groups)
-		self.image = pygame.image.load('../graphics/test/player.png').convert_alpha()
-		self.rect = self.image.get_rect(topleft = pos)
-		self.hitbox = self.rect.inflate(-6,HITBOX_OFFSET['player'])
+		super().__init__(groups)  #Function from the tile module regarding movement interactions with objects and layers of the map
+		self.image = pygame.image.load('../graphics/test/player.png').convert_alpha()   #Generates the sprite for the character image from its file in storage
+		self.rect = self.image.get_rect(topleft = pos)  #Sets the starting position of the character image and its boundaries with respect to the map
+		self.hitbox = self.rect.inflate(-6,HITBOX_OFFSET['player'])  #Sets the hitbox for the character image
 
 		# graphics setup
-		self.import_player_assets()  
-		self.status = 'down' #Default for starting the game is character facing down
+		self.import_player_assets()
+		self.status = 'down'   #Default for starting the game is character facing down
 
 		# movement 
-		self.attacking = False
-		self.attack_cooldown = 400
-		self.attack_time = None
-		self.obstacle_sprites = obstacle_sprites
+		self.attacking = False       #Default state of the character is not attacking
+		self.attack_cooldown = 400   #Default attack cooldown, changes for each weapon
+		self.attack_time = None      #No timer since the character does not start in the attack state, this will change for each cooldown
+		self.obstacle_sprites = obstacle_sprites  #Generates the places where the character cannot move on the map (detailed in settings, but also a part of the map file)
 
-		# weapon
-		self.create_attack = create_attack
-		self.destroy_attack = destroy_attack
-		self.weapon_index = 0
-		self.weapon = list(weapon_data.keys())[self.weapon_index]
-		self.can_switch_weapon = True
-		self.weapon_switch_time = None
-		self.switch_duration_cooldown = 200
+		# weapons for regular attack
+		self.create_attack = create_attack      #When attacking creates a weapon sprite and hitbox
+		self.destroy_attack = destroy_attack    #After the attack cooldown ends, destroys the weapon sprite and hitbox
+		self.weapon_index = 0      #Current weapon number, contains corresponding data, starts at the sword weapon but can be changed by input
+		self.weapon = list(weapon_data.keys())[self.weapon_index]   #Used for the switching of weapons as well, sets the data of current weapon
+		self.can_switch_weapon = True        #By default the player is able to switch the characters weapon
+		self.weapon_switch_time = None       #Time taken to switch to another weapon, set as none since the character already has a cooldown after switching to limit speed of input
+		self.switch_duration_cooldown = 200  #Default weapon switch cooldown, does not change
 
 		# magic 
-		self.create_magic = create_magic
-		self.magic_index = 0
-		self.magic = list(magic_data.keys())[self.magic_index]
-		self.can_switch_magic = True
-		self.magic_switch_time = None
+		self.create_magic = create_magic   #Generates a sprite of the magic used, which disappears after a cooldown
+ 		self.magic_index = 0     #Starts with the flame spell equipped
+		self.magic = list(magic_data.keys())[self.magic_index]  #Used to find data for the starting spell, located in settings
+		self.can_switch_magic = True     #Character is able to switch magic by default
+		self.magic_switch_time = None    #Time taken to switch between magic, does not change
 
-		# stats
-		self.stats = {'health': 100,'energy':60,'attack': 10,'magic': 4,'speed': 5}
-		self.max_stats = {'health': 300, 'energy': 140, 'attack': 20, 'magic' : 10, 'speed': 10}
-		self.upgrade_cost = {'health': 100, 'energy': 100, 'attack': 100, 'magic' : 100, 'speed': 100}
-		self.health = self.stats['health'] * 0.5
-		self.energy = self.stats['energy'] * 0.8
+		# stats, can be changed through an upgrade menu
+		self.stats = {'health': 100,'energy':60,'attack': 10,'magic': 4,'speed': 5}   #Dictionary containing starting stats for the character
+		self.max_stats = {'health': 300, 'energy': 140, 'attack': 20, 'magic' : 10, 'speed': 10}  #Dictionary containing maximum stats for character
+		self.upgrade_cost = {'health': 100, 'energy': 100, 'attack': 100, 'magic' : 100, 'speed': 100}  #Upgrade cost dictionary, changes with each upgrade
+		self.health = self.stats['health'] * 0.5 #Health stat changes with respect to dictionary
+		self.energy = self.stats['energy'] * 0.8 #Energy stat changes with stats dictionary
 		self.exp = 5000
-		self.speed = self.stats['speed']
+		self.speed = self.stats['speed']  #Speed stat changes with dictionary, as it is updated by upgrades
 
-		# damage timer
-		self.vulnerable = True
-		self.hurt_time = None
-		self.invulnerability_duration = 500
+		# damage timer, acts as an indirect limit to the amount of damage the character can take for a given time
+		self.vulnerable = True   #By default, character is able to take damage
+		self.hurt_time = None    #Time taken to decrease health when character takes damage
+		self.invulnerability_duration = 500   #Time that separates the frequency at which character health can drop
 
-		# import a sound
+		# imports a sound for attacking, and sets it to a healthy volume 
 		self.weapon_attack_sound = pygame.mixer.Sound('../audio/sword.wav')
 		self.weapon_attack_sound.set_volume(0.4)
 
 	def import_player_assets(self):
 	#This function provides animation output for each possible state that the character is in
 	
-		character_path = '../graphics/player/'
+		character_path = '../graphics/player/'  #Path to the character folder containing all sprites used in animations for the character
 		
 		#Dictionary to define each state of the character and its corresponding name for the animation of that state
 		#As stated earlier there are 12 states, 3 in terms of different inputs, with 4 for each different input in each direction(up, down, left, right)
+		#These dictionary terms correspond to the names of files containing their sprites
 		self.animations = {'up': [],'down': [],'left': [],'right': [],
 			'right_idle':[],'left_idle':[],'up_idle':[],'down_idle':[],
 			'right_attack':[],'left_attack':[],'up_attack':[],'down_attack':[]}
