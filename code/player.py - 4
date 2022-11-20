@@ -14,6 +14,10 @@ from entity import Entity
 
 class Player(Entity):
 	def __init__(self,pos,groups,obstacle_sprites,create_attack,destroy_attack,create_magic):
+	#This function is used to update every aspect of the character regarding its different possible states
+	#There are 12 states in total: 4 for attacking (1 in each direction), 4 for moving (1 in each direction) and 4 for standing still(1 in each direction
+	#All of these parts deal with these states in one way or another, and allow the player to continually provide input for the character with response
+	
 		super().__init__(groups)
 		self.image = pygame.image.load('../graphics/test/player.png').convert_alpha()
 		self.rect = self.image.get_rect(topleft = pos)
@@ -74,6 +78,13 @@ class Player(Entity):
 			self.animations[animation] = import_folder(full_path)
 
 	def input(self):
+	#This function regards all possible types of attacking, meaning it allows for attack input, and the type of attack to be switched by another input
+	#These attacks all use different sprites, the data for which is stored in another module. 
+	#However, the character attack animation is the same, to reduce the number of states the character sprite needs
+	
+	#It should be noted that while it is possible for the character to be in multiple states at once.
+	#this fuction, and the weapon segment from the first function prevent that to reduce the amount and complexity of sprites needed
+	
 		if not self.attacking:
 			keys = pygame.key.get_pressed()
 
