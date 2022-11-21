@@ -32,16 +32,16 @@ class AnimationPlayer:
 			'thunder': import_folder('../graphics/particles/thunder'),
 
 			# Imports the .png files for the graphics for enemy deaths
-			# Imports squid
+			# Imports squid death
 			'squid': import_folder('../graphics/particles/smoke_orange'),
-			# Imports racoon
+			# Imports racoon death
 			'raccoon': import_folder('../graphics/particles/raccoon'),
-			# Imports spirits
+			# Imports spirits death
 			'spirit': import_folder('../graphics/particles/nova'),
-			# Imports bamboo
+			# Imports bamboo death
 			'bamboo': import_folder('../graphics/particles/bamboo'),
 			
-			# Imports the .png files for the graphics for the differnt leafs 
+			# Imports the .png files for the graphics for the different leafs 
 			'leaf': (
 				import_folder('../graphics/particles/leaf1'),
 				import_folder('../graphics/particles/leaf2'),
@@ -91,9 +91,9 @@ class AnimationPlayer:
 class ParticleEffect(pygame.sprite.Sprite):
 	# Initiates class ParticleEffects
 	def __init__(self,pos,animation_frames,groups):
-		# 
+		# Initiales "groups"
 		super().__init__(groups)
-		# 
+		# The sprite used is for the magic effect
 		self.sprite_type = 'magic'
 		# Initial player frame_index is 0
 		self.frame_index = 0
