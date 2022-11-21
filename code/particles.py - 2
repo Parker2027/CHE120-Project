@@ -61,10 +61,10 @@ class AnimationPlayer:
 	
 	# Creates function reflect_images with arguments "self" and "frames"
 	def reflect_images(self,frames):
-		# variable new_frames = empty set
+		# variable new_frames = empty list
 		new_frames = []
 
-		#
+		# 
 		for frame in frames:
 			#
 	 		flipped_frame = pygame.transform.flip(frame,True,False)
@@ -75,7 +75,7 @@ class AnimationPlayer:
 
 	# Creates function create_grass_particles with arguments "self", "pos" and "groups"
 	def create_grass_particles(self,pos,groups):
-		#
+		# 
 	 	animation_frames = choice(self.frames['leaf'])
 		#
 	 	ParticleEffect(pos,animation_frames,groups)
@@ -110,9 +110,8 @@ class ParticleEffect(pygame.sprite.Sprite):
 	def animate(self):
 		# defines variable self.frame_index
 		self.frame_index += self.animation_speed
-		# 
+		# If ever self.frames grows larger than self.frames_index the 
 		if self.frame_index >= len(self.frames):
-			#
 			self.kill()
 		else:
 			# set self.image to 
@@ -120,5 +119,5 @@ class ParticleEffect(pygame.sprite.Sprite):
 
 	# Creates function update with argument "Self"
 	def update(self):
-		#
+		# The player animation is updated
 		self.animate()
