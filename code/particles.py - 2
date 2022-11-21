@@ -91,30 +91,30 @@ class AnimationPlayer:
 class ParticleEffect(pygame.sprite.Sprite):
 	# Initiates class ParticleEffects
 	def __init__(self,pos,animation_frames,groups):
-		#
+		# 
 		super().__init__(groups)
 		# 
 		self.sprite_type = 'magic'
-		# 
+		# Initial player frame_index is 0
 		self.frame_index = 0
 		# defines animation_speed 
 		self.animation_speed = 0.15
-		# 
+		# Player fps equal to animation fps
 		self.frames = animation_frames
-		# 
+		# PLayer image fps equal to self.frame_index
 		self.image = self.frames[self.frame_index]
-		# 
+		# Stores the position (center) of the player
 		self.rect = self.image.get_rect(center = pos)
 		
 	# Creates function animate with argument "Self"
 	def animate(self):
 		# defines variable self.frame_index
 		self.frame_index += self.animation_speed
-		# If ever self.frames grows larger than self.frames_index the 
+		# If ever self.frames grows larger than self.frames_index the player is killed
 		if self.frame_index >= len(self.frames):
 			self.kill()
 		else:
-			# set self.image to 
+			# set player image to number of player fps
 			self.image = self.frames[int(self.frame_index)]
 
 	# Creates function update with argument "Self"
