@@ -38,12 +38,16 @@ class Level:
 		self.game_paused = False
 
 		# sprite group setup
+		# Viewpoint for sprites
 		self.visible_sprites = YSortCameraGroup()
+		# Image for sprites is from a group of images
 		self.obstacle_sprites = pygame.sprite.Group()
 
 		# attack sprites
 		self.current_attack = None
+		# Image for sprites is from a group of images
 		self.attack_sprites = pygame.sprite.Group()
+		# Image for sprites is from a group of images
 		self.attackable_sprites = pygame.sprite.Group()
 
 		# sprite setup
@@ -54,8 +58,9 @@ class Level:
 		# The level can update as the game progresses
 		self.upgrade = Upgrade(self.player)
 
-		# particles
+		# Particles animation
 		self.animation_player = AnimationPlayer()
+		# Magic animation
 		self.magic_player = MagicPlayer(self.animation_player)
 		
 	# Creates function create_map with argument "Self"
@@ -75,25 +80,33 @@ class Level:
 
 		# Do the following when style and layot exist in layouts.items()
 		for style,layout in layouts.items():
+			#
 			for row_index,row in enumerate(layout):
 				for col_index, col in enumerate(row):
 					# When col is not equal to -1 the size of the map is equal to the length of the column/row times the size of a tile
 					if col != '-1':
-						# 
+						# Horizontal width
 						x = col_index * TILESIZE
+						# Vertical Width
 						y = row_index * TILESIZE
+						# Creates a boundary around the world ap
 						if style == 'boundary':
 							Tile((x,y),[self.obstacle_sprites],'invisible')
+						# The image for grass is selcted at random
 						if style == 'grass':
+							# 
 							random_grass_image = choice(graphics['grass'])
 							Tile(
 								(x,y),
 								[self.visible_sprites,self.obstacle_sprites,self.attackable_sprites],
 								'grass',
 								random_grass_image)
-
+						
+						# The imagefor an object depends on what object is there
 						if style == 'object':
+							# 
 							surf = graphics['objects'][int(col)]
+							# Position and image of the object
 							Tile((x,y),[self.visible_sprites,self.obstacle_sprites],'object',surf)
 						
 						# Whenever an entity is called
@@ -127,26 +140,30 @@ class Level:
 									self.add_exp)
 	# Creates function create_attack with argument "Self"
 	def create_attack(self):
-		# 
+		# Player Attack is defined by player stats + attack sprites
 		self.current_attack = Weapon(self.player,[self.visible_sprites,self.attack_sprites])
 
 	# Creates function create_magic with arguments "Self", "Style", "Strength" and "Cost"
 	def create_magic(self,style,strength,cost):
-		# 
+		# When healing magic is used
 		if style == 'heal':
 			self.magic_player.heal(self.player,strength,cost,[self.visible_sprites])
 
+		# When flame magic is used
 		if style == 'flame':
 			self.magic_player.flame(self.player,cost,[self.visible_sprites,self.attack_sprites])
 
 	Creates function destroy_attack with argument "Self"
 	def destroy_attack(self):
+		# Kill the enemy
 		if self.current_attack:
 			self.current_attack.kill()
+		# 
 		self.current_attack = None
 
 	Creates function player_attack_logic with argument "Self"
 	def player_attack_logic(self):
+		# 
 		if self.attack_sprites:
 			for attack_sprite in self.attack_sprites:
 				collision_sprites = pygame.sprite.spritecollide(attack_sprite,self.attackable_sprites,False)
@@ -161,31 +178,46 @@ class Level:
 						else:
 							target_sprite.get_damage(self.player,attack_sprite.sprite_type)
 
+	# Creates function damage_player that manages when the player can be damaged and by how much
 	def damage_player(self,amount,attack_type):
+		# The the player is vulnerable
 		if self.player.vulnerable:
+			# The player loses an amountv of health when attacked
 			self.player.health -= amount
+			# The player is made invincible for a moment
 			self.player.vulnerable = False
+			# How long the player is invincible for
 			self.player.hurt_time = pygame.time.get_ticks()
+			# Partcile animations from player attacks
 			self.animation_player.create_particles(attack_type,self.player.rect.center,[self.visible_sprites])
 
+	# Create function trigger_death_particles that controls the animation upon player death
 	def trigger_death_particles(self,pos,particle_type):
 
+		# Player death animation
 		self.animation_player.create_particles(particle_type,pos,self.visible_sprites)
 
+	# Creates a function add_exp tha controls the amount of experience the player gathers
 	def add_exp(self,amount):
 
+		# Current amount of player exp + amount earned
 		self.player.exp += amount
 
+	# Creates a function toggle_menu that determines whether the menu is visible or not
 	def toggle_menu(self):
 
+		# The menu is either visible or not visible
 		self.game_paused = not self.game_paused 
 
+	# 
 	def run(self):
 		self.visible_sprites.custom_draw(self.player)
 		self.ui.display(self.player)
 		
+		# Whenever the game is paused the display is updated
 		if self.game_paused:
 			self.upgrade.display()
+		# Update sprites, an ememy locations whenever the game is running
 		else:
 			self.visible_sprites.update()
 			self.visible_sprites.enemy_update(self.player)
@@ -215,7 +247,9 @@ class YSortCameraGroup(pygame.sprite.Group):
 		self.offset.y = player.rect.centery - self.half_height
 
 		# drawing the floor
+		# Aligns the floor with the player
 		floor_offset_pos = self.floor_rect.topleft - self.offset
+		# Displays the floor surface
 		self.display_surface.blit(self.floor_surf,floor_offset_pos)
 
 		# for sprite in self.sprites():
@@ -223,7 +257,10 @@ class YSortCameraGroup(pygame.sprite.Group):
 			offset_pos = sprite.rect.topleft - self.offset
 			self.display_surface.blit(sprite.image,offset_pos)
 
+	# Creates a function enemy_update which update enemy sprites
 	def enemy_update(self,player):
+		#
 		enemy_sprites = [sprite for sprite in self.sprites() if hasattr(sprite,'sprite_type') and sprite.sprite_type == 'enemy']
+		# Whenever the player encounters an enemy update sprites
 		for enemy in enemy_sprites:
 			enemy.enemy_update(player)
