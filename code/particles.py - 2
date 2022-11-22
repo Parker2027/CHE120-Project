@@ -49,7 +49,7 @@ class AnimationPlayer:
 				import_folder('../graphics/particles/leaf4'),
 				import_folder('../graphics/particles/leaf5'),
 				import_folder('../graphics/particles/leaf6'),
-				# 
+				# Mirrors all the imported leaf graphics
 				self.reflect_images(import_folder('../graphics/particles/leaf1')),
 				self.reflect_images(import_folder('../graphics/particles/leaf2')),
 				self.reflect_images(import_folder('../graphics/particles/leaf3')),
@@ -66,11 +66,10 @@ class AnimationPlayer:
 
 		# 
 		for frame in frames:
-			#
+			# 
 	 		flipped_frame = pygame.transform.flip(frame,True,False)
 			#
 	 		new_frames.append(flipped_frame)
-		#
 		return new_frames
 
 	# Creates function create_grass_particles with arguments "self", "pos" and "groups"
