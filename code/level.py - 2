@@ -196,7 +196,7 @@ class Level:
 			self.player.vulnerable = False
 			# How long the player is invincible for
 			self.player.hurt_time = pygame.time.get_ticks()
-			# Partcile animations from player attacks
+			# Particle animations from player attacks
 			self.animation_player.create_particles(attack_type,self.player.rect.center,[self.visible_sprites])
 
 	# Create function trigger_death_particles that controls the animation upon player death
@@ -217,11 +217,11 @@ class Level:
 		# The menu is either visible or not visible
 		self.game_paused = not self.game_paused 
 
-	# 
+	# Create function run which controls whether the game display is running
 	def run(self):
-		# 
+		# The player animation is running
 		self.visible_sprites.custom_draw(self.player)
-		# 
+		# The UI is running
 		self.ui.display(self.player)
 		
 		# Whenever the game is paused the display is updated
@@ -231,9 +231,9 @@ class Level:
 		else:
 			# Update the visible sprites such as player, obstacles and grass
 			self.visible_sprites.update()
-			# 
+			# Update enemy sprite and values
 			self.visible_sprites.enemy_update(self.player)
-			#
+			# Runs the function controlling player attack
 			self.player_attack_logic()
 		
 # Creates class YSortCameraGroup
@@ -241,15 +241,14 @@ class YSortCameraGroup(pygame.sprite.Group):
 	def __init__(self):
 
 		# general setup 
-		# 
 		super().__init__()
-		# 
+		# Sets up display surface
 		self.display_surface = pygame.display.get_surface()
-		# 
+		# Half the display width
 		self.half_width = self.display_surface.get_size()[0] // 2
-		# 
+		# Half the display height
 		self.half_height = self.display_surface.get_size()[1] // 2
-		# 
+		# The display is offset
 		self.offset = pygame.math.Vector2()
 
 		# creating the floor
@@ -273,8 +272,11 @@ class YSortCameraGroup(pygame.sprite.Group):
 		self.display_surface.blit(self.floor_surf,floor_offset_pos)
 
 		# for sprite in self.sprites():
+		# 
 		for sprite in sorted(self.sprites(),key = lambda sprite: sprite.rect.centery):
+			# 
 			offset_pos = sprite.rect.topleft - self.offset
+			# 
 			self.display_surface.blit(sprite.image,offset_pos)
 
 	# Creates a function enemy_update which update enemy sprites
