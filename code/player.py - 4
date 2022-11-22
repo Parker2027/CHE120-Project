@@ -178,25 +178,30 @@ class Player(Entity):
 				self.magic = list(magic_data.keys())[self.magic_index]
 
 	def get_status(self):
+	#This function finds the non directional state of the character and updates the characters status to read its state
 
-		# idle status
+		# checks and assigns idle status to self.status if the character is not moving or attacking
 		if self.direction.x == 0 and self.direction.y == 0:
 			if not 'idle' in self.status and not 'attack' in self.status:
 				self.status = self.status + '_idle'
-
+				
+		#Checks and assigns attacking status to character if it is in the attack state
 		if self.attacking:
+			#The character is made unable to move if attacking
 			self.direction.x = 0
 			self.direction.y = 0
 			if not 'attack' in self.status:
+			#updates the state of the character based on its current state, to avoid repetition of states in the self status string
 				if 'idle' in self.status:
 					self.status = self.status.replace('_idle','_attack')
 				else:
 					self.status = self.status + '_attack'
-		else:
+		else: #Removes attack from status string for when the character stops attacking
 			if 'attack' in self.status:
-				self.status = self.status.replace('_attack','')
+				self.status = self.status.replace('_attack','') #Replaces attack with an empty string
 
 	def cooldowns(self):
+	#This function acts as a clock for cooldowns, using parts of another module
 		current_time = pygame.time.get_ticks()
 
 		if self.attacking:
