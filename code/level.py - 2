@@ -77,7 +77,9 @@ class Level:
 		for style,layout in layouts.items():
 			for row_index,row in enumerate(layout):
 				for col_index, col in enumerate(row):
+					# When col is not equal to -1 the size of the map is equal to the length of the column/row times the size of a tile
 					if col != '-1':
+						# 
 						x = col_index * TILESIZE
 						y = row_index * TILESIZE
 						if style == 'boundary':
