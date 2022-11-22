@@ -94,7 +94,7 @@ class Level:
 							Tile((x,y),[self.obstacle_sprites],'invisible')
 						# The image for grass is selcted at random
 						if style == 'grass':
-							# 
+							# Choses a random grass tile image
 							random_grass_image = choice(graphics['grass'])
 							Tile(
 								(x,y),
@@ -131,13 +131,21 @@ class Level:
 								else: monster_name = 'squid'
 								# Once an enemy is attacked run the corresponding effects
 								Enemy(
+									# What monster did the player defeat?
 									monster_name,
+									# Where is the monster?
 									(x,y),
+									# Sprites for the player, monsters and obstacles
 									[self.visible_sprites,self.attackable_sprites],
+									# Obstacle sprites
 									self.obstacle_sprites,
+									# How much damge did the player take?
 									self.damage_player,
+									# Death particles animation
 									self.trigger_death_particles,
+									# Add exp to player for deafeating monsters
 									self.add_exp)
+									
 	# Creates function create_attack with argument "Self"
 	def create_attack(self):
 		# Player Attack is defined by player stats + attack sprites
@@ -211,7 +219,9 @@ class Level:
 
 	# 
 	def run(self):
+		# 
 		self.visible_sprites.custom_draw(self.player)
+		# 
 		self.ui.display(self.player)
 		
 		# Whenever the game is paused the display is updated
@@ -219,8 +229,11 @@ class Level:
 			self.upgrade.display()
 		# Update sprites, an ememy locations whenever the game is running
 		else:
+			# Update the visible sprites such as player, obstacles and grass
 			self.visible_sprites.update()
+			# 
 			self.visible_sprites.enemy_update(self.player)
+			#
 			self.player_attack_logic()
 		
 # Creates class YSortCameraGroup
@@ -228,14 +241,21 @@ class YSortCameraGroup(pygame.sprite.Group):
 	def __init__(self):
 
 		# general setup 
+		# 
 		super().__init__()
+		# 
 		self.display_surface = pygame.display.get_surface()
+		# 
 		self.half_width = self.display_surface.get_size()[0] // 2
+		# 
 		self.half_height = self.display_surface.get_size()[1] // 2
+		# 
 		self.offset = pygame.math.Vector2()
 
 		# creating the floor
+		# Floor image
 		self.floor_surf = pygame.image.load('../graphics/tilemap/ground.png').convert()
+		# Sets topleft coordinates to (0,0)
 		self.floor_rect = self.floor_surf.get_rect(topleft = (0,0))
 
 	# Creates a function custom_draw with arguments "Self" and "Player"
@@ -259,7 +279,7 @@ class YSortCameraGroup(pygame.sprite.Group):
 
 	# Creates a function enemy_update which update enemy sprites
 	def enemy_update(self,player):
-		#
+		# If there is an enemy display their sprite
 		enemy_sprites = [sprite for sprite in self.sprites() if hasattr(sprite,'sprite_type') and sprite.sprite_type == 'enemy']
 		# Whenever the player encounters an enemy update sprites
 		for enemy in enemy_sprites:
