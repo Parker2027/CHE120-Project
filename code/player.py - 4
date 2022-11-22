@@ -203,6 +203,7 @@ class Player(Entity):
 	def cooldowns(self):
 	#This function acts as a clock for cooldowns, using parts of another module
 		current_time = pygame.time.get_ticks()
+		
 
 		if self.attacking:
 			if current_time - self.attack_time >= self.attack_cooldown + weapon_data[self.weapon]['cooldown']:
