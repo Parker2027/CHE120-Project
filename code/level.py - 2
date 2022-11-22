@@ -166,7 +166,7 @@ class Level:
 		# Kill the enemy
 		if self.current_attack:
 			self.current_attack.kill()
-		# 
+		# Otherwise not attacking
 		self.current_attack = None
 
 	Creates function player_attack_logic with argument "Self"
@@ -272,7 +272,6 @@ class YSortCameraGroup(pygame.sprite.Group):
 		self.display_surface.blit(self.floor_surf,floor_offset_pos)
 
 		# for sprite in self.sprites():
-		# 
 		for sprite in sorted(self.sprites(),key = lambda sprite: sprite.rect.centery):
 			# Offset
 			offset_pos = sprite.rect.topleft - self.offset
