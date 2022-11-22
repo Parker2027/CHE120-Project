@@ -13,6 +13,7 @@ class Enemy(Entity): #this is a line of code that sets up a whole new class spec
 		# graphics setup #original programmer lets us know that this is how each enemy's sprite is set up
 		self.import_graphics(monster_name) #this line imports the sprites for each enemy using the mmonster_name variable
 		self.status = 'idle' #this line shows us the state of the enemy sprite, which in this case is idle (stationary, not active until engaged by user)
+		# Next line causes out of index error
 		self.image = self.animations[self.status][self.frame_index] #this line changes the sprite's animation while in the idle position
 
 		# movement #original programmer lets us know that this is how each enemy moves
