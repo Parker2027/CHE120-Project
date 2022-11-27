@@ -165,28 +165,40 @@ class Level:
 			# Flame magic is defined with sprites, cost in energy and magic power
 			self.magic_player.flame(self.player,cost,[self.visible_sprites,self.attack_sprites])
 
-	# 
+	# 101
 	def destroy_attack(self):
 		# Kill the enemy
 		if self.current_attack:
+			# 101
 			self.current_attack.kill()
 		# Otherwise not attacking
 		self.current_attack = None
 
 	# Creates function player_attack_logic with argument "Self"
 	def player_attack_logic(self):
-		# 
+		# 101
 		if self.attack_sprites:
+			# 101
 			for attack_sprite in self.attack_sprites:
+				# 101
 				collision_sprites = pygame.sprite.spritecollide(attack_sprite,self.attackable_sprites,False)
+				# 101
 				if collision_sprites:
+					# 101
 					for target_sprite in collision_sprites:
+						# 101
 						if target_sprite.sprite_type == 'grass':
+							# 101
 							pos = target_sprite.rect.center
+							# 101
 							offset = pygame.math.Vector2(0,75)
+							# 101
 							for leaf in range(randint(3,6)):
+								# 101
 								self.animation_player.create_grass_particles(pos - offset,[self.visible_sprites])
+							# 101
 							target_sprite.kill()
+						# 101
 						else:
 							target_sprite.get_damage(self.player,attack_sprite.sprite_type)
 
@@ -218,7 +230,7 @@ class Level:
 	# Controls the toggle for different UI options (Different weapons and magic types)
 	def toggle_menu(self):
 
-		# 
+		# 101
 		self.game_paused = not self.game_paused 
 
 	# Create function run which controls whether the game display is running
