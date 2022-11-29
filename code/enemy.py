@@ -1,7 +1,7 @@
 import pygame #this line is imports a pygame file
 from settings import * #this seems to be another imported file called "settings", based on the way it's formatted I assume it comes from some other place in the game file
 from entity import Entity #another imported file called "entity", likely from some other place in the game file
-from support import *#another imported file called 'support', likely from some other place in the game's code
+from support import * #another imported file called 'support', likely from some other place in the game's code
 
 class Enemy(Entity): #this is a line of code that sets up a whole new class specific to this code, the "enemy" class; all of the assets for enemies for the user to fight likely come from here
 	def __init__(self,monster_name,pos,groups,obstacle_sprites,damage_player,trigger_death_particles,add_exp): #this is a function for the class, which has lots of variables for the enemy's name, position, number of enemies, how it damages the player, and how it dies
