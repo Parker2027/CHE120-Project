@@ -4,15 +4,19 @@ from settings import *
 class UI:
 	def __init__(self):
 		
-		# general 
+		# general
+        #This allows for the display to open when the menu is opened
+        #Font and font size are used
 		self.display_surface = pygame.display.get_surface()
 		self.font = pygame.font.Font(UI_FONT,UI_FONT_SIZE)
 
 		# bar setup 
+        #The resource bar interface is shown, using the dimensions and values to fill and display the resource bars
 		self.health_bar_rect = pygame.Rect(10,10,HEALTH_BAR_WIDTH,BAR_HEIGHT)
 		self.energy_bar_rect = pygame.Rect(10,34,ENERGY_BAR_WIDTH,BAR_HEIGHT)
 
 		# convert weapon dictionary
+        #This function displays the current weapon the player character has within the menu
 		self.weapon_graphics = []
 		for weapon in weapon_data.values():
 			path = weapon['graphic']
@@ -20,6 +24,7 @@ class UI:
 			self.weapon_graphics.append(weapon)
 
 		# convert magic dictionary
+        #This function displays the current magic the player character has, this is shown in the menu
 		self.magic_graphics = []
 		for magic in magic_data.values():
 			magic = pygame.image.load(magic['graphic']).convert_alpha()
@@ -27,19 +32,22 @@ class UI:
 
 
 	def show_bar(self,current,max_amount,bg_rect,color):
-		# draw bg 
+		# draw bg #################################################################
 		pygame.draw.rect(self.display_surface,UI_BG_COLOR,bg_rect)
 
 		# converting stat to pixel
+        #This function establishes a ratio for the resource values which allows the resource bars in the menu to show how much resource there is compared to the maximum resource the player character currently has
 		ratio = current / max_amount
 		current_width = bg_rect.width * ratio
 		current_rect = bg_rect.copy()
 		current_rect.width = current_width
 
 		# drawing the bar
+        ##########################################################################
 		pygame.draw.rect(self.display_surface,color,current_rect)
 		pygame.draw.rect(self.display_surface,UI_BORDER_COLOR,bg_rect,3)
-
+        #This function displays how much experience the player has accumulated
+        #######################################################################
 	def show_exp(self,exp):
 		text_surf = self.font.render(str(int(exp)),False,TEXT_COLOR)
 		x = self.display_surface.get_size()[0] - 20
