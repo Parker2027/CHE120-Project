@@ -113,97 +113,174 @@ class Enemy(Entity):
 			self.animations[animation] = import_folder(main_path + animation) 
 			#this line lets the code acess a folder and play the appropriate animation for each specific monster during the aprropriate situation
 
-	def get_player_distance_direction(self,player):		 #this section is a function that seems to calculate the distance between the enemy and the player, and the direction of the player with regards to the enemy
-		enemy_vec = pygame.math.Vector2(self.rect.center) # this line creates a vector from the enemy to the center of the game's map
-		player_vec = pygame.math.Vector2(player.rect.center) # this line creates a vector from the player to the center of the game's map
-		distance = (player_vec - enemy_vec).magnitude() #this line defines a variable distance as the enemy's vector subtracted from the enemy's vector and converted to magnitude
+	def get_player_distance_direction(self,player):
+		#this section is a function that seems to calculate the distance between the enemy and the player, and the direction of the player with regards to the enemy
+		enemy_vec = pygame.math.Vector2(self.rect.center) 
+		# this line creates a vector from the enemy to the center of the game's map
+		player_vec = pygame.math.Vector2(player.rect.center) 
+		# this line creates a vector from the player to the center of the game's map
+		distance = (player_vec - enemy_vec).magnitude() 
+		#this line defines a variable distance as the enemy's vector subtracted from the enemy's vector and converted to magnitude
 
-		if distance > 0:			 #this line establishes an if statement where the parameters are that distance must be greater than 0
-			direction = (player_vec - enemy_vec).normalize()		 # this line seems to establish a new variable direction by finding the difference between the player's vector and the enemy's vector, and normalizing it
-		else:			 #else statement for scenarios where distance = 0 (should not be possible for distance to be less than 0)
-			direction = pygame.math.Vector2()		 #this establishes a new vector which I assume is betweenthe player and the enemy
+		if distance > 0:
+			#this line establishes an if statement where the parameters are that distance must be greater than 0
+			direction = (player_vec - enemy_vec).normalize()
+			# this line seems to establish a new variable direction by finding the difference between the player's vector and the enemy's vector, and normalizing it
+		else:
+			#else statement for scenarios where distance = 0 (should not be possible for distance to be less than 0)
+			direction = pygame.math.Vector2()
+			#this establishes a new vector which I assume is betweenthe player and the enemy
+		return (distance,direction)
+		#this line just gives the calculated value for distance and direction
 
-		return (distance,direction)		 #this line just gives the calculated value for distance and direction
+	def get_status(self, player): 
+		#this line establishes a new function using the self and player as input variables, which gets the status between the two entities
+		distance = self.get_player_distance_direction(player)[0] 
+		#this retrieves the values for distance and direction from the above function
 
-	def get_status(self, player): #this line establishes a new function using the self and player as input variables, which gets the status between the two entities
-		distance = self.get_player_distance_direction(player)[0] #this retrieves the values for distance and direction from the above function
+		if distance <= self.attack_radius and self.can_attack: 
+			#this line establishes an if statement that checks if the distance between the player and the enemy is within the enemy's attack radius, and whether the enemy is able to attack
+			if self.status != 'attack': 
+				# this line establishes another if statement within an if statement for if the enemy is unable to attack
+				self.frame_index = 0 
+				# this line is for the the enemy's frame data; with a frame_index = 0, we're being told that the enemy is no longer moving and is stationary
+			self.status = 'attack' 
+			#this line seems to help ensure that the enemy is in attack mode and ready to fight the player when engaged
+		elif distance <= self.notice_radius: 
+			#this elif checks if the distance between the player and the enemy is within the enemy's notice range 
+			self.status = 'move' 
+			# this line makes the enemy move towards the player while it is in the notice range
+		else: 
+			# this else statement is a code in case the player is not within the enemy's notice radius
+			self.status = 'idle' 
+			#this line ensures that the enemy is idle and performing it's idle animations when not engaged in combat
 
-		if distance <= self.attack_radius and self.can_attack: #this line establishes an if statement that checks if the distance between the player and the enemy is within the enemy's attack radius, and whether the enemy is able to attack
-			if self.status != 'attack': # this line establishes another if statement within an if statement for if the enemy is unable to attack
-				self.frame_index = 0 # this line is for the the enemy's frame data; with a frame_index = 0, we're being told that the enemy is no longer moving and is stationary
-			self.status = 'attack' #this line seems to help ensure that the enemy is in attack mode and ready to fight the player when engaged
-		elif distance <= self.notice_radius: #this elif checks if the distance between the player and the enemy is within the enemy's notice range 
-			self.status = 'move' # this line makes the enemy move towards the player while it is in the notice range
-		else: # this else statement is a code in case the player is not within the enemy's notice radius
-			self.status = 'idle' #this line ensures that the enemy is idle and performing it's idle animations when not engaged in combat
+	def actions(self,player): 
+		# this function establishes a basis for the interactions betweem the enemy and the player when the player is attacking the enemy
+		if self.status == 'attack': 
+			#this if statement is for the enemy while it is in attack mode
+			self.attack_time = pygame.time.get_ticks() 
+			#this establishes a variable for enemies that can serve as a timer
+			self.damage_player(self.attack_damage,self.attack_type) 
+			#this line calls up the attack type and attack damage variables to determine how much damage the player will be dealt
+			self.attack_sound.play() 
+			#this line plays the attack sound as the enemy attacks the player
+		elif self.status == 'move': 
+			#this elif statement is for the situation where the enemy is in moveing mode
+			self.direction = self.get_player_distance_direction(player)[1] 
+			#this line seems to be moving the enemy toward the player
+		else: 
+			#this else statement should be for situation where the enemy is not in the attack or move position (enemy is idle)
+			self.direction = pygame.math.Vector2() 
+			# this line is establishing a new vector, which is likely between the enemy and the player
 
-	def actions(self,player): # this function establishes a basis for the interactions betweem the enemy and the player when the player is attacking the enemy
-		if self.status == 'attack': #this if statement is for the enemy while it is in attack mode
-			self.attack_time = pygame.time.get_ticks() #this establishes a variable for enemies that can serve as a timer
-			self.damage_player(self.attack_damage,self.attack_type) #this line calls up the attack type and attack damage variables to determine how much damage the player will be dealt
-			self.attack_sound.play() #this line plays the attack sound as the enemy attacks the player
-		elif self.status == 'move': #this elif statement is for the situation where the enemy is in moveing mode
-			self.direction = self.get_player_distance_direction(player)[1] #this line seems to be moving the enemy toward the player
-		else: #this else statement should be for situation where the enemy is not in the attack or move position (enemy is idle)
-			self.direction = pygame.math.Vector2() # this line is establishing a new vector, which is likely between the enemy and the player
-
-	def animate(self): # this function is for animating the enemy
-		animation = self.animations[self.status] #this line calls up the animation of the enemy based on whether or not it is in attack, move, or idle position
+	def animate(self): 
+		# this function is for animating the enemy
+		animation = self.animations[self.status] 
+		#this line calls up the animation of the enemy based on whether or not it is in attack, move, or idle position
 		
-		self.frame_index += self.animation_speed #this line increases the frame data of the enemy's animation incrementally
-		if self.frame_index >= len(animation): #this if statement runs if the frame_index is greater than the length of the enemy's animation
-			if self.status == 'attack': # this if statement within the previous if statement is for the enemy in attack mode
-				self.can_attack = False #this line has diabled the enemy's ability to attack
-			self.frame_index = 0 #this line resets the frame data to 0
+		self.frame_index += self.animation_speed 
+		#this line increases the frame data of the enemy's animation incrementally
+		if self.frame_index >= len(animation): 
+			#this if statement runs if the frame_index is greater than the length of the enemy's animation
+			if self.status == 'attack': '
+				# this if statement within the previous if statement is for the enemy in attack mode
+				self.can_attack = False 
+				#this line has diabled the enemy's ability to attack
+			self.frame_index = 0 
+			#this line resets the frame data to 0
 
-		self.image = animation[int(self.frame_index)] #this variable produces an animation from the frame_index value turned to an integer
-		self.rect = self.image.get_rect(center = self.hitbox.center) #this line seems to set the center of the rectangle that serves as the enemy's hitbox to be moved to the center of the enemy's sprite
+		self.image = animation[int(self.frame_index)] 
+		#this variable produces an animation from the frame_index value turned to an integer
+		self.rect = self.image.get_rect(center = self.hitbox.center) 
+		#this line seems to set the center of the rectangle that serves as the enemy's hitbox to be moved to the center of the enemy's sprite
 
-		if not self.vulnerable: #this if statement is for the situation where the enemy has its invincibility frames and is invulnerable to attacks
-			alpha = self.wave_value() #this line seems to be referring to an audio file that is being set to the variabel alpha
-			self.image.set_alpha(alpha) #this is setting an image to the same variable alpha
-		else: #this else statement is for the situation where the enemy does not have invincibility
-			self.image.set_alpha(255) #this is setting an image to the same variable aplha
+		if not self.vulnerable: 
+			#this if statement is for the situation where the enemy has its invincibility frames and is invulnerable to attacks
+			alpha = self.wave_value() 
+			#this line seems to be referring to an audio file that is being set to the variabel alpha
+			self.image.set_alpha(alpha) 
+			#this is setting an image to the same variable alpha
+		else: 
+			#this else statement is for the situation where the enemy does not have invincibility
+			self.image.set_alpha(255) 
+			#this is setting an image to the same variable aplha
 
-	def cooldowns(self): # this function acts to control the cooldown time for the enemy
-		current_time = pygame.time.get_ticks() #this line sets a timer for the variable current_time
-		if not self.can_attack: # this if statement for the situation where the enemy cannot attack the enemy
-			if current_time - self.attack_time >= self.attack_cooldown: #this if statement within the if statement is for the scenario where subtracting the attack time from the current time is greater than or equal to the cooldown time
-				self.can_attack = True # this line restores the enemy's ability to attack the player
+	def cooldowns(self): 
+		# this function acts to control the cooldown time for the enemy
+		current_time = pygame.time.get_ticks() 
+		#this line sets a timer for the variable current_time
+		if not self.can_attack: 
+			# this if statement for the situation where the enemy cannot attack the enemy
+			if current_time - self.attack_time >= self.attack_cooldown: 
+				#this if statement within the if statement is for the scenario where subtracting the attack time from the current time is greater than or equal to the cooldown time
+				self.can_attack = True 
+				# this line restores the enemy's ability to attack the player
 
-		if not self.vulnerable: #this if statement is for the siutation where the enemy has its invincibility status and not vulnerable to attack
-			if current_time - self.hit_time >= self.invincibility_duration: #this if statement within an if statement is for the scenario where subtracting the hit time from the current time is greater or equal the inv
-				self.vulnerable = True #this line restores the vulnerability to the enemy
+		if not self.vulnerable: 
+			#this if statement is for the siutation where the enemy has its invincibility status and not vulnerable to attack
+			if current_time - self.hit_time >= self.invincibility_duration: 
+				#this if statement within an if statement is for the scenario where subtracting the hit time from the current time is greater or equal the inv
+				self.vulnerable = True 
+				#this line restores the vulnerability to the enemy
 
-	def get_damage(self,player,attack_type): #this function calculates the damage inflicted upon the enemy when the player attacks it
-		if self.vulnerable: #this if statement is for the scenario where the enemy is vulnerable to attacks from the player
-			self.hit_sound.play() #this line plays the hit sound effect whenever one of the player's attacks land on the enemy's hitbox
-			self.direction = self.get_player_distance_direction(player)[1] #this line exists to get the direction and distance from the player to the enemy, perhaps to calculate some form of knockback or recoil as a result from the enemy taking damage
-			if attack_type == 'weapon': #ths if statement is for the situation where the enemy is struck by the player's weapon (eg. sword, arrow, etc)
-				self.health -= player.get_full_weapon_damage() #this line updates the enemy's health to reflect the damage it sustained from the player's weapon
-			else: #this else statement is for situations where the enemy is struck by attacks that are not dealt by a weapon
-				self.health -= player.get_full_magic_damage() #this line updates the enemy's health to reflect the damage it sustained from the player's magical attacks
-			self.hit_time = pygame.time.get_ticks() #this line establishes a timer for the hit time, which would be the time between a player's attacks
-			self.vulnerable = False #this line returns the enemy's invincibility status briefly
+	def get_damage(self,player,attack_type): 
+		#this function calculates the damage inflicted upon the enemy when the player attacks it
+		if self.vulnerable: 
+			#this if statement is for the scenario where the enemy is vulnerable to attacks from the player
+			self.hit_sound.play() 
+			#this line plays the hit sound effect whenever one of the player's attacks land on the enemy's hitbox
+			self.direction = self.get_player_distance_direction(player)[1] 
+			#this line exists to get the direction and distance from the player to the enemy, perhaps to calculate some form of knockback or recoil as a result from the enemy taking damage
+			if attack_type == 'weapon': 
+				#this if statement is for the situation where the enemy is struck by the player's weapon (eg. sword, arrow, etc)
+				self.health -= player.get_full_weapon_damage() 
+				#this line updates the enemy's health to reflect the damage it sustained from the player's weapon
+			else: 
+				#this else statement is for situations where the enemy is struck by attacks that are not dealt by a weapon
+				self.health -= player.get_full_magic_damage() 
+				#this line updates the enemy's health to reflect the damage it sustained from the player's magical attacks
+			self.hit_time = pygame.time.get_ticks() 
+			#this line establishes a timer for the hit time, which would be the time between a player's attacks
+			self.vulnerable = False 
+			#this line returns the enemy's invincibility status briefly
 
-	def check_death(self): #this function allows for the enemy to die once the monster's health is equal to 0
-		if self.health <= 0: #this if statement establishes what happens when the enemy's health drop below 0
-			self.kill() #this line seems to shut down the code for the individual enemy completely after it has been slain
-			self.trigger_death_particles(self.rect.center,self.monster_name) #this line triggers the death particles effect from the center of the enemy's hitbox rectangle
-			self.add_exp(self.exp) #this line allows valuable exp to be dropped after the enemy's death
-			self.death_sound.play() #this line plays the death sound for the enemy
+	def check_death(self): 
+		#this function allows for the enemy to die once the monster's health is equal to 0
+		if self.health <= 0: 
+			#this if statement establishes what happens when the enemy's health drop below 0
+			self.kill() 
+			#this line seems to shut down the code for the individual enemy completely after it has been slain
+			self.trigger_death_particles(self.rect.center,self.monster_name) 
+			#this line triggers the death particles effect from the center of the enemy's hitbox rectangle
+			self.add_exp(self.exp) 
+			#this line allows valuable exp to be dropped after the enemy's death
+			self.death_sound.play() 
+			#this line plays the death sound for the enemy
 
-	def hit_reaction(self): #this function codes for the reaction the enemy will have after being hit
-		if not self.vulnerable: #this if statement is for the scenario where the enemy is invincible to attacks
-			self.direction *= -self.resistance #this line seems to code for potential knockback or recoil from a player's attacks on an enemy
+	def hit_reaction(self): 
+		#this function codes for the reaction the enemy will have after being hit
+		if not self.vulnerable: 
+			#this if statement is for the scenario where the enemy is invincible to attacks
+			self.direction *= -self.resistance 
+			#this line seems to code for potential knockback or recoil from a player's attacks on an enemy
 
-	def update(self): #this function updates the status of the enemy and allows the other functions to run
-		self.hit_reaction() #this line runs the above hit_reaction function
-		self.move(self.speed) #this line allows the enemy to move at a rate of self.speed
-		self.animate() #this line runs the animate function
-		self.cooldowns() # this line runs the cooldowns function
-		self.check_death() # this line runs the check_death function
+	def update(self): 
+		#this function updates the status of the enemy and allows the other functions to run
+		self.hit_reaction() 
+		#this line runs the above hit_reaction function
+		self.move(self.speed) 
+		#this line allows the enemy to move at a rate of self.speed
+		self.animate() 
+		#this line runs the animate function
+		self.cooldowns() 
+		# this line runs the cooldowns function
+		self.check_death() 
+		# this line runs the check_death function
 
-	def enemy_update(self,player): #this function updates the enemy based on the status of itself and the player
-		self.get_status(player) #this line runs the get_status function using the player as an input variable
-		self.actions(player) #this line runs the actions function using th player as an input variable
+	def enemy_update(self,player): 
+		#this function updates the enemy based on the status of itself and the player
+		self.get_status(player) 
+		#this line runs the get_status function using the player as an input variable
+		self.actions(player) 
+		#this line runs the actions function using th player as an input variable
