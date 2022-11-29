@@ -1,64 +1,117 @@
-import pygame #this line is imports a pygame file
-from settings import * #this seems to be another imported file called "settings", based on the way it's formatted I assume it comes from some other place in the game file
-from entity import Entity #another imported file called "entity", likely from some other place in the game file
-from support import * #another imported file called 'support', likely from some other place in the game's code
+import pygame 
+#this line is imports a pygame file
+from settings import * 
+#this seems to be another imported file called "settings", based on the way it's formatted I assume it comes from some other place in the game file
+from entity import Entity 
+#another imported file called "entity", likely from some other place in the game file
+from support import * 
+#another imported file called 'support', likely from some other place in the game's code
 
-class Enemy(Entity): #this is a line of code that sets up a whole new class specific to this code, the "enemy" class; all of the assets for enemies for the user to fight likely come from here
-	def __init__(self,monster_name,pos,groups,obstacle_sprites,damage_player,trigger_death_particles,add_exp): #this is a function for the class, which has lots of variables for the enemy's name, position, number of enemies, how it damages the player, and how it dies
-			#the original programmer includes their own notes in this file
+class Enemy(Entity): 
+	#this is a line of code that sets up a whole new class specific to this code, the "enemy" class; all of the assets for enemies for the user to fight likely come from here
+	def __init__(self,monster_name,pos,groups,obstacle_sprites,damage_player,trigger_death_particles,add_exp): 
+		#this is a function for the class, which has lots of variables for the enemy's name, position, number of enemies, how it damages the player, and how it dies
+			
+		#the original programmer includes their own notes in this file
 		# general setup #original programmer lets us know that this is how each enemy is set up
-		super().__init__(groups) # the super() function is used to make a variable share properties with another variable; given that information, we see that the __init__(groups) initiates the code for the enemies
-		self.sprite_type = 'enemy' #this line seems to be the actual line that creates the enemies
+		
+		super().__init__(groups) 
+		# the super() function is used to make a variable share properties with another variable; given that information, we see that the __init__(groups) initiates the code for the enemies
+		self.sprite_type = 'enemy' 
+		#this line seems to be the actual line that creates the enemies
 
-		# graphics setup #original programmer lets us know that this is how each enemy's sprite is set up
-		self.import_graphics(monster_name) #this line imports the sprites for each enemy using the mmonster_name variable
-		self.status = 'idle' #this line shows us the state of the enemy sprite, which in this case is idle (stationary, not active until engaged by user)
+		# graphics setup 
+		#original programmer lets us know that this is how each enemy's sprite is set up
+		self.import_graphics(monster_name) 
+		#this line imports the sprites for each enemy using the mmonster_name variable
+		self.status = 'idle' 
+		#this line shows us the state of the enemy sprite, which in this case is idle (stationary, not active until engaged by user)
 		# Next line causes out of index error
-		self.image = self.animations[self.status][self.frame_index] #this line changes the sprite's animation while in the idle position
+		# Original programmer let's us know what the following line does, which is creating an out of index error
+		self.image = self.animations[self.status][self.frame_index] 
+		#this line changes the sprite's animation while in the idle position
 
-		# movement #original programmer lets us know that this is how each enemy moves
-		self.rect = self.image.get_rect(topleft = pos) #this line creates a rectangle for each enemy, which likely produces a hitbox based on what the line below states
-		self.hitbox = self.rect.inflate(0,-10) #this line creates the hitbox for the enemy using the rectangle from the previous line; when the user attacks the enemy, hits landed on the the hitbox will reflect as damage upon the enemy
-		self.obstacle_sprites = obstacle_sprites #this line controls how the enemy interacts with the environment and with the user; the enemy acts as an obstacle that the user cannot pass walk through without removing it or avoiding it; similarly, the enemy cannot move through an obstacle without removing it or avoiding
+		# movement 
+		#original programmer lets us know that this is how each enemy moves
+		self.rect = self.image.get_rect(topleft = pos) 
+		#this line creates a rectangle for each enemy, which likely produces a hitbox based on what the line below states
+		self.hitbox = self.rect.inflate(0,-10) 
+		#this line creates the hitbox for the enemy using the rectangle from the previous line; when the user attacks the enemy, hits landed on the the hitbox will reflect as damage upon the enemy
+		self.obstacle_sprites = obstacle_sprites 
+		#this line controls how the enemy interacts with the environment and with the user; the enemy acts as an obstacle that the user cannot pass walk through without removing it or avoiding it; similarly, the enemy cannot move through an obstacle without removing it or avoiding
 
-		# stats #original programmer lets us know that this is where the stats for each monster is found
-		self.monster_name = monster_name #this line sets each enemy's name to distinguish the different types of enemy
-		monster_info = monster_data[self.monster_name] #this line exists to attach the name of each enemy to its specific data for its stats and characteristics
-		self.health = monster_info['health'] #this line establishes how much health the enemy will have (eg. a health of 50 or 100)
-		self.exp = monster_info['exp'] #this line establishes how much experience ("exp") the enemy will yield for the player once it is defeated
-		self.speed = monster_info['speed'] #this line establishes how quickly or slowly the enemy will move
-		self.attack_damage = monster_info['damage'] #this line establishes how much damage the enemy can deal to the player
-		self.resistance = monster_info['resistance'] #this line establishes what resistances the enemy will have towards different attack types (eg. a water enemy may be immune to water attacks, but may take damage from lightning attacks)
-		self.attack_radius = monster_info['attack_radius'] #this line establishes the radius of an enemy's attack (determines how far an enemy has to be from the player before it can deal damage to them)
-		self.notice_radius = monster_info['notice_radius'] #this line establishes when the enemy will notice a player (determines the radius for which an enemy can notice tha player, switching it from a passive, stationary demeanor to a more hostile, aggressive one)
-		self.attack_type = monster_info['attack_type'] #this line establishes the type of attack the enemy will perform (whether it is a fire attack or a melee attak or an explosion attack, etc)
+		# stats 
+		#original programmer lets us know that this is where the stats for each monster is found
+		self.monster_name = monster_name 
+		#this line sets each enemy's name to distinguish the different types of enemy
+		monster_info = monster_data[self.monster_name] 
+		#this line exists to attach the name of each enemy to its specific data for its stats and characteristics
+		self.health = monster_info['health'] 
+		#this line establishes how much health the enemy will have (eg. a health of 50 or 100)
+		self.exp = monster_info['exp'] 
+		#this line establishes how much experience ("exp") the enemy will yield for the player once it is defeated
+		self.speed = monster_info['speed'] 
+		#this line establishes how quickly or slowly the enemy will move
+		self.attack_damage = monster_info['damage'] 
+		#this line establishes how much damage the enemy can deal to the player
+		self.resistance = monster_info['resistance'] 
+		#this line establishes what resistances the enemy will have towards different attack types (eg. a water enemy may be immune to water attacks, but may take damage from lightning attacks)
+		self.attack_radius = monster_info['attack_radius'] 
+		#this line establishes the radius of an enemy's attack (determines how far an enemy has to be from the player before it can deal damage to them)
+		self.notice_radius = monster_info['notice_radius'] 
+		#this line establishes when the enemy will notice a player (determines the radius for which an enemy can notice tha player, switching it from a passive, stationary demeanor to a more hostile, aggressive one)
+		self.attack_type = monster_info['attack_type'] 
+		#this line establishes the type of attack the enemy will perform (whether it is a fire attack or a melee attak or an explosion attack, etc)
 
-		# player interaction #original programmer lets us know that this is where the interactions between the enemy and the player are determined
-		self.can_attack = True #this line allows the enemy to attack the player; if can attack = False, the enemy would not be able to attack
-		self.attack_time = None #this line probably ensure that the enemy cannot perform consecutive attacks against the player
-		self.attack_cooldown = 400 #this line is cooldown time for the attack; it makes sure that the enemy cannot perform consecutive attacks against the player until the cooldown time runs out
-		self.damage_player = damage_player #this line allows any damage the enemy has dealt to the player to be reflected in player's health
-		self.trigger_death_particles = trigger_death_particles #this line triggers a particle effect to appear once the enemy has been defeated by the player
-		self.add_exp = add_exp # this line add the exp to the player after the enemy has been slain
+		# player interaction 
+		#original programmer lets us know that this is where the interactions between the enemy and the player are determined
+		self.can_attack = True 
+		#this line allows the enemy to attack the player; if can attack = False, the enemy would not be able to attack
+		self.attack_time = None 
+		#this line probably ensure that the enemy cannot perform consecutive attacks against the player
+		self.attack_cooldown = 400 
+		#this line is cooldown time for the attack; it makes sure that the enemy cannot perform consecutive attacks against the player until the cooldown time runs out
+		self.damage_player = damage_player 
+		#this line allows any damage the enemy has dealt to the player to be reflected in player's health
+		self.trigger_death_particles = trigger_death_particles 
+		#this line triggers a particle effect to appear once the enemy has been defeated by the player
+		self.add_exp = add_exp 
+		# this line add the exp to the player after the enemy has been slain
 
-		# invincibility timer #original programmer lets us know that this section codes for a timer for the enemy
-		self.vulnerable = True # this line establishes that each enemy is vulnerable to an attack by the player
-		self.hit_time = None # this line might make make an attack instantaneous, preventing any lag during a fight with the enemy
-		self.invincibility_duration = 300 #this line establishes some invicibility frames for the enemy, ensuring that the player cannot deal consecutive attacks against the enemy and incresing the difficulty of the fight; once the invicibility timer reaches 0, the invincibility period ends and the enemy is vulnerable once again
+		# invincibility timer 
+		#original programmer lets us know that this section codes for a timer for the enemy
+		self.vulnerable = True 
+		# this line establishes that each enemy is vulnerable to an attack by the player
+		self.hit_time = None 
+		# this line might make make an attack instantaneous, preventing any lag during a fight with the enemy
+		self.invincibility_duration = 300 
+		#this line establishes some invicibility frames for the enemy, ensuring that the player cannot deal consecutive attacks against the enemy and incresing the difficulty of the fight; once the invicibility timer reaches 0, the invincibility period ends and the enemy is vulnerable once again
 
-		# sounds #original programmer lets us know that this section codes for the audios used by the enemies in the game
-		self.death_sound = pygame.mixer.Sound('../audio/death.wav') #this line codes for the audio used by the enemy when it is slain by the player
-		self.hit_sound = pygame.mixer.Sound('../audio/hit.wav') # this line codes for the audio used by the enemy when it is hit
-		self.attack_sound = pygame.mixer.Sound(monster_info['attack_sound']) # this line codes for the audio used by the enemy when it is attacking
-		self.death_sound.set_volume(0.6) #this line sets the volume of the death sound to 0.6
-		self.hit_sound.set_volume(0.6) #this line sets the volume of the hit sound to 0.6
-		self.attack_sound.set_volume(0.6) #this line sets the volume of the attack sound to 0.6
+		# sounds 
+		#original programmer lets us know that this section codes for the audios used by the enemies in the game
+		self.death_sound = pygame.mixer.Sound('../audio/death.wav') 
+		#this line codes for the audio used by the enemy when it is slain by the player
+		self.hit_sound = pygame.mixer.Sound('../audio/hit.wav') 
+		# this line codes for the audio used by the enemy when it is hit
+		self.attack_sound = pygame.mixer.Sound(monster_info['attack_sound']) 
+		# this line codes for the audio used by the enemy when it is attacking
+		self.death_sound.set_volume(0.6) 
+		#this line sets the volume of the death sound to 0.6
+		self.hit_sound.set_volume(0.6) 
+		#this line sets the volume of the hit sound to 0.6
+		self.attack_sound.set_volume(0.6) 
+		#this line sets the volume of the attack sound to 0.6
 
-	def import_graphics(self,name): # this section is a function that runs animations for the enemy
-		self.animations = {'idle':[],'move':[],'attack':[]} #this line seems to create a list containing all of those objects
-		main_path = f'../graphics/monsters/{name}/' #this line seems to establish a list of strings for the monster's animations and graphics
-		for animation in self.animations.keys(): #this is a for loop for the animation of the enemies to be repeated as long as the animation exists in it's proper folder
-			self.animations[animation] = import_folder(main_path + animation) #this line lets the code acess a folder and play the appropriate animation for each specific monster during the aprropriate situation
+	def import_graphics(self,name): 
+		# this section is a function that runs animations for the enemy
+		self.animations = {'idle':[],'move':[],'attack':[]} 
+		#this line seems to create a list containing all of those objects
+		main_path = f'../graphics/monsters/{name}/' 
+		#this line seems to establish a list of strings for the monster's animations and graphics
+		for animation in self.animations.keys(): 
+			#this is a for loop for the animation of the enemies to be repeated as long as the animation exists in it's proper folder
+			self.animations[animation] = import_folder(main_path + animation) 
+			#this line lets the code acess a folder and play the appropriate animation for each specific monster during the aprropriate situation
 
 	def get_player_distance_direction(self,player):		 #this section is a function that seems to calculate the distance between the enemy and the player, and the direction of the player with regards to the enemy
 		enemy_vec = pygame.math.Vector2(self.rect.center) # this line creates a vector from the enemy to the center of the game's map
