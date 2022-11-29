@@ -47,7 +47,7 @@ class Player(Entity):
 
 		# magic 
 		self.create_magic = create_magic   #Generates a sprite of the magic used, which disappears after a cooldown
- 		self.magic_index = 0     #Starts with the flame spell equipped
+		self.magic_index = 0     #Starts with the flame spell equipped
 		self.magic = list(magic_data.keys())[self.magic_index]  #Used to find data for the starting spell, located in settings
 		self.can_switch_magic = True     #Character is able to switch magic by default
 		self.magic_switch_time = None    #Time taken to switch between magic, does not change

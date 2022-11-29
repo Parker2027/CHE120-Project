@@ -13,11 +13,11 @@ from support import *
 # Imports choice and randint from the module random
 from random import choice, randint
 # Imports class Weapon from the file weapon.py
-from weapon import class Weapon
+from weapon import Weapon
 # Imports class UI from the file ui.py
-from ui import class UI
+from ui import UI
 # Imports class Enemy from the file enemy.py
-from enemy import class Enemy
+from enemy import Enemy
 # Imports class AnimationPlayer from file particles.py
 from particles import AnimationPlayer
 

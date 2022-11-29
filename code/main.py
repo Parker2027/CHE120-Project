@@ -1,4 +1,4 @@
-*import pygame, sys #this line imports the pygame file in order for the game's visuals and a sys file
+import pygame, sys #this line imports the pygame file in order for the game's visuals and a sys file
 from settings import * #this line seems to call up some code from a settings file elsewhere in this game's file
 from level import Level #this line seems to call up a function Level from a level file elsewhere in this game's code
 
