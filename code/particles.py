@@ -12,33 +12,33 @@ class AnimationPlayer:
 		# assigns frames to class AnimationPlayer
 		self.frames = {
 			# Imports the .png files for the graphics for the magic effects
-			# Imports flame
+			# Imports flame graphics
 			'flame': import_folder('../graphics/particles/flame/frames'),
-			# Imports aura
+			# Imports aura graphics
 			'aura': import_folder('../graphics/particles/aura'),
-			# Imports heal
+			# Imports heal graphics
 			'heal': import_folder('../graphics/particles/heal/frames'),
 			
 			# Imports the .png files for the graphics for the physical attacks
-			# Imports claw
+			# Imports claw graphics
 			'claw': import_folder('../graphics/particles/claw'),
-			# Imports slash
+			# Imports slash graphics
 			'slash': import_folder('../graphics/particles/slash'),
-			# Imports sparkle
+			# Imports sparkle graphics
 			'sparkle': import_folder('../graphics/particles/sparkle'),
-			# Imports leaf_attack
+			# Imports leaf_attack graphics
 			'leaf_attack': import_folder('../graphics/particles/leaf_attack'),
-			# Imports thunder
+			# Imports thunder graphics
 			'thunder': import_folder('../graphics/particles/thunder'),
 
 			# Imports the .png files for the graphics for enemy deaths
-			# Imports squid death
+			# Imports squid death graphics
 			'squid': import_folder('../graphics/particles/smoke_orange'),
-			# Imports racoon death
+			# Imports racoon death graphics
 			'raccoon': import_folder('../graphics/particles/raccoon'),
-			# Imports spirits death
+			# Imports spirits death graphics
 			'spirit': import_folder('../graphics/particles/nova'),
-			# Imports bamboo death
+			# Imports bamboo death graphics
 			'bamboo': import_folder('../graphics/particles/bamboo'),
 			
 			# Imports the .png files for the graphics for the different leafs 
@@ -59,38 +59,37 @@ class AnimationPlayer:
 				)
 			}
 	
-	# Creates function reflect_images with arguments "self" and "frames"
+	# Creates a function that mirrors sprites
 	def reflect_images(self,frames):
 		# variable new_frames = empty list
 		new_frames = []
 
-		# 
 		for frame in frames:
-			# 
+			# Flips the sprites on the x axis
 	 		flipped_frame = pygame.transform.flip(frame,True,False)
-			#
+			# Saves the mirrored sprites in the list new_frames
 	 		new_frames.append(flipped_frame)
 		return new_frames
 
-	# Creates function create_grass_particles with arguments "self", "pos" and "groups"
+	# Adds the particles from interaction with grass
 	def create_grass_particles(self,pos,groups):
-		# 
+		# How fast is the animation playing
 	 	animation_frames = choice(self.frames['leaf'])
-		#
+		# Particle effect is added at the position of the grass and at the framerate
 	 	ParticleEffect(pos,animation_frames,groups)
 		
-	# 
+	# Adds the general animations
 	def create_particles(self,animation_type,pos,groups):
-		#
+		# The speed of the animation depends on which animation is chosen
 		animation_frames = self.frames[animation_type]
-		#
+		# The particle effect occurs at the location and speed specified
 		ParticleEffect(pos,animation_frames,groups)
 
 # Creates class ParticleEffect
 class ParticleEffect(pygame.sprite.Sprite):
 	# Initiates class ParticleEffects
 	def __init__(self,pos,animation_frames,groups):
-		# Initiales "groups"
+		# Initializes "groups"
 		super().__init__(groups)
 		# The sprite used is for the magic effect
 		self.sprite_type = 'magic'
@@ -100,23 +99,23 @@ class ParticleEffect(pygame.sprite.Sprite):
 		self.animation_speed = 0.15
 		# Player fps equal to animation fps
 		self.frames = animation_frames
-		# PLayer image fps equal to self.frame_index
+		# Player image fps equal to self.frame_index
 		self.image = self.frames[self.frame_index]
 		# Stores the position (center) of the player
 		self.rect = self.image.get_rect(center = pos)
 		
-	# Creates function animate with argument "Self"
+	# Controls animation (Change in sprites)
 	def animate(self):
-		# defines variable self.frame_index
+		# Choses a new image from the list of images
 		self.frame_index += self.animation_speed
-		# If ever self.frames grows larger than self.frames_index the player is killed
+		# Destoy the sprite after it is used
 		if self.frame_index >= len(self.frames):
 			self.kill()
 		else:
-			# set player image to number of player fps
+			# Otherwise the image displayed is the image selected 
 			self.image = self.frames[int(self.frame_index)]
 
-	# Creates function update with argument "Self"
+	# The animation will update with each tick that passes
 	def update(self):
 		# The player animation is updated
 		self.animate()
