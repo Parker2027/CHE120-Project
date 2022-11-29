@@ -12,33 +12,33 @@ class AnimationPlayer:
 		# assigns frames to class AnimationPlayer
 		self.frames = {
 			# Imports the .png files for the graphics for the magic effects
-			# Imports flame
+			# Imports flame graphics
 			'flame': import_folder('../graphics/particles/flame/frames'),
-			# Imports aura
+			# Imports aura graphics
 			'aura': import_folder('../graphics/particles/aura'),
-			# Imports heal
+			# Imports  graphics
 			'heal': import_folder('../graphics/particles/heal/frames'),
 			
 			# Imports the .png files for the graphics for the physical attacks
-			# Imports claw
+			# Imports claw graphics
 			'claw': import_folder('../graphics/particles/claw'),
-			# Imports slash
+			# Imports slash graphic
 			'slash': import_folder('../graphics/particles/slash'),
-			# Imports sparkle
+			# Imports sparkle graphic
 			'sparkle': import_folder('../graphics/particles/sparkle'),
-			# Imports leaf_attack
+			# Imports leaf_attack graphics
 			'leaf_attack': import_folder('../graphics/particles/leaf_attack'),
-			# Imports thunder
+			# Imports thunder graphics
 			'thunder': import_folder('../graphics/particles/thunder'),
 
 			# Imports the .png files for the graphics for enemy deaths
-			# Imports squid death
+			# Imports squid death graphics
 			'squid': import_folder('../graphics/particles/smoke_orange'),
-			# Imports racoon death
+			# Imports racoon death graphics
 			'raccoon': import_folder('../graphics/particles/raccoon'),
-			# Imports spirits death
+			# Imports spirits death graphics
 			'spirit': import_folder('../graphics/particles/nova'),
-			# Imports bamboo death
+			# Imports bamboo death graphics
 			'bamboo': import_folder('../graphics/particles/bamboo'),
 			
 			# Imports the .png files for the graphics for the different leafs 
