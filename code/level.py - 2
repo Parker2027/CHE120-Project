@@ -165,40 +165,39 @@ class Level:
 			# Flame magic is defined with sprites, cost in energy and magic power
 			self.magic_player.flame(self.player,cost,[self.visible_sprites,self.attack_sprites])
 
-	# 101
+	# Controls attacking
 	def destroy_attack(self):
 		# Kill the enemy
 		if self.current_attack:
-			# 101
 			self.current_attack.kill()
 		# Otherwise not attacking
 		self.current_attack = None
 
 	# Creates function player_attack_logic with argument "Self"
 	def player_attack_logic(self):
-		# 101
+		# If the player uses an attack
 		if self.attack_sprites:
-			# 101
+			# If the player attack is attacking something
 			for attack_sprite in self.attack_sprites:
-				# 101
+				# If the sprite for an attack collides with the sprite for an enemy the player damages an enemy
 				collision_sprites = pygame.sprite.spritecollide(attack_sprite,self.attackable_sprites,False)
-				# 101
+				# If the attack hits something
 				if collision_sprites:
-					# 101
+					# If the sprite the player attacks is an attackable sprite do damage
 					for target_sprite in collision_sprites:
-						# 101
+						# If the player attacks grass
 						if target_sprite.sprite_type == 'grass':
-							# 101
+							# The position attacked should be center of a single sprite (stops you from attacking sevral things at once)
 							pos = target_sprite.rect.center
-							# 101
+							# Controls where the attack hits
 							offset = pygame.math.Vector2(0,75)
-							# 101
+							# If the sprite is for grass
 							for leaf in range(randint(3,6)):
-								# 101
+								# The player animation attacks the defined position
 								self.animation_player.create_grass_particles(pos - offset,[self.visible_sprites])
-							# 101
+							# If the player attack sprite collides with a grass sprite destroy the attacked sprite
 							target_sprite.kill()
-						# 101
+						# If the target is an enemy do damage rather than destroy the target
 						else:
 							target_sprite.get_damage(self.player,attack_sprite.sprite_type)
 
