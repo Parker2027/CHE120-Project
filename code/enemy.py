@@ -183,7 +183,7 @@ class Enemy(Entity):
 		#this line increases the frame data of the enemy's animation incrementally
 		if self.frame_index >= len(animation): 
 			#this if statement runs if the frame_index is greater than the length of the enemy's animation
-			if self.status == 'attack': '
+			if self.status == 'attack': 
 				# this if statement within the previous if statement is for the enemy in attack mode
 				self.can_attack = False 
 				#this line has diabled the enemy's ability to attack
