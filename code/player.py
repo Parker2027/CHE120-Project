@@ -279,15 +279,15 @@ class Player(Entity):
 
 	def update(self):
 		#This function updates the state of the player and updates all related data needed to work with new states
-		self.input()
 		#This gets an input from the player. Self input is done first since it is the only variable revolving around the player that is changed the most
-		self.cooldowns()
+		self.input()
 		#This is run after getting the input to carry out parts of the input such as attacks and weapon or magic switching, and to maintain accuracy of the cooldowns immediately after the input is given
-		self.get_status()
+		self.cooldowns()
 		#The characters state is updated to match that provided of the input given
-		self.animate()
+		self.get_status()
 		#Once the state has been updated, the character is animated to match it with a given sprite
-		self.move(self.stats['speed'])
+		self.animate()
 		#All inputs without cooldown timers, such as moving, are then carried out. These have less priority since they do not need to be timed and stop by choice of the player
-		self.energy_recovery()
+		self.move(self.stats['speed'])
 		#Lowest priority to updating stats of player. Triggers energy rejuvenation, which does not depend on the input of the player and is refreshed every time the character is updated
+		self.energy_recovery()
