@@ -201,40 +201,49 @@ class Player(Entity):
 				self.status = self.status.replace('_attack','') #Replaces attack with an empty string
 
 	def cooldowns(self):
-	#This function acts as a clock for cooldowns, using parts of another module
+	#This function acts as a clock that cooldowns are based on, using parts of another module
 		current_time = pygame.time.get_ticks()
 		
-
+		#Cooldown for attack input
 		if self.attacking:
+			#Compares the attack time to the time taken for an attack cooldown based on specific weapon data
 			if current_time - self.attack_time >= self.attack_cooldown + weapon_data[self.weapon]['cooldown']:
+				#If the time spent in the attacking state is greater than or equal to the cooldown of the attack, the character is no longer attacking
 				self.attacking = False
-				self.destroy_attack()
-
+				self.destroy_attack() #Destroys the sprite of the weapon used to attack
+				
+		#Cooldown for weapon switching, if the input to switch weapons was given
 		if not self.can_switch_weapon:
+			#If the time spent after switching the weapon is greater than or equal to the cooldown for weapon switching, the player is able to switch weapons again
 			if current_time - self.weapon_switch_time >= self.switch_duration_cooldown:
 				self.can_switch_weapon = True
-
+				
+		#Cooldown for switching magic if the input to switch magic is given
 		if not self.can_switch_magic:
+			#If the time taken after switching weapons is greater than or equal to the cooldown for weapon switching, the player is able to switch again
 			if current_time - self.magic_switch_time >= self.switch_duration_cooldown:
+				#Cooldown is the same as for switching weapons
 				self.can_switch_magic = True
-
+		#Cooldown for grace period after taking damage
 		if not self.vulnerable:
+			#If the time taken after being damaged is greater than or equal to the grace period of invulnerability, the character can be damaged again
 			if current_time - self.hurt_time >= self.invulnerability_duration:
 				self.vulnerable = True
 
 	def animate(self):
+		#Runs an animation function to output a sprite for every state the character is in
 		animation = self.animations[self.status]
 
-		# loop over the frame index 
+		#loop over the frame index to run the animation repeatedly so that movement and constantly changing states are maintained smoothly
 		self.frame_index += self.animation_speed
 		if self.frame_index >= len(animation):
 			self.frame_index = 0
 
-		# set the image
+		#setting the image
 		self.image = animation[int(self.frame_index)]
 		self.rect = self.image.get_rect(center = self.hitbox.center)
 
-		# flicker 
+		#flicker effect that triggers right after the character takes damage 
 		if not self.vulnerable:
 			alpha = self.wave_value()
 			self.image.set_alpha(alpha)
@@ -242,24 +251,29 @@ class Player(Entity):
 			self.image.set_alpha(255)
 
 	def get_full_weapon_damage(self):
+		#Returns the damage done by a weapon using indexes of stats for the character and weapon in a dictionary under the setttings module
 		base_damage = self.stats['attack']
 		weapon_damage = weapon_data[self.weapon]['damage']
-		return base_damage + weapon_damage
+		return base_damage + weapon_damage  #Sum of the damage done by the weapon and the attack stat of the character
 
 	def get_full_magic_damage(self):
+		#Returns the damage output of spells using indexes of dictionaries found under the settings module and character stats
 		base_damage = self.stats['magic']
 		spell_damage = magic_data[self.magic]['strength']
-		return base_damage + spell_damage
+		return base_damage + spell_damage #Sum of the damage done by an individual spell and the magic damage potential by character stats
 
 	def get_value_by_index(self,index):
+		#This function returns a value in a list of character stats by indexing for the desired output
 		return list(self.stats.values())[index]
 
 	def get_cost_by_index(self,index):
+		#This function returns a value for cost (of using magic) in a list by indexing for the desired output 
 		return list(self.upgrade_cost.values())[index]
 
 	def energy_recovery(self):
+		#This function enables recovery of energy for casting spells in the game when the characters energy is not full
 		if self.energy < self.stats['energy']:
-			self.energy += 0.01 * self.stats['magic']
+			self.energy += 0.01 * self.stats['magic'] #Recharges energy by adding a small amount that is a multiple of the players magic stat every time the function is run
 		else:
 			self.energy = self.stats['energy']
 
