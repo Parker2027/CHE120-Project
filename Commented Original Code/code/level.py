@@ -83,7 +83,7 @@ class Level:
 			# Counts the current posiyion of the player
 			for row_index,row in enumerate(layout):
 				for col_index, col in enumerate(row):
-					# For all tiles on the map that the player cannot walk on
+					# For all tiles on the map that the player cannot walk on (-1 indicates there is nothing there on the map)
 					if col != '-1':
 						# Horizontal position on the map
 						x = col_index * TILESIZE
