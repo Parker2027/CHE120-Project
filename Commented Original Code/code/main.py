@@ -17,7 +17,8 @@ class Game:
 		# this line establishes the display screen for the game
 		self.screen = pygame.display.set_mode((WIDTH,HEIGTH)) 
 		#this line produces a caption for the game that says 'Zelda'
-		pygame.display.set_caption('Zelda') 
+		### Changed the game caption from Zelda
+		pygame.display.set_caption('CHE120 Project') 
 		#this line makes a clock that runs in game
 		self.clock = pygame.time.Clock() 
 		# Creates the game level (graphics and positions)

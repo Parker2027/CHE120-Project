@@ -1,7 +1,8 @@
 # game setup
 #Width and Height of game display
-WIDTH    = 1280	
-HEIGTH   = 720
+### Changed the size of the pygame window ###
+WIDTH    = 1600	
+HEIGTH   = 900
 #Frames Per Second and Tile Size which stays static while the game is running
 FPS      = 60
 TILESIZE = 64

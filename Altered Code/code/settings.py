@@ -3,7 +3,8 @@
 WIDTH    = 1280	
 HEIGTH   = 720
 #Frames Per Second and Tile Size which stays static while the game is running
-FPS      = 60
+### Changed the fps to 90 ###
+FPS      = 90
 TILESIZE = 64
 ####################################################
 HITBOX_OFFSET = {

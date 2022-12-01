@@ -56,9 +56,11 @@ class Player(Entity):
 		self.stats = {'health': 100,'energy':60,'attack': 10,'magic': 4,'speed': 5}   #Dictionary containing starting stats for the character
 		self.max_stats = {'health': 300, 'energy': 140, 'attack': 20, 'magic' : 10, 'speed': 10}  #Dictionary containing maximum stats for character
 		self.upgrade_cost = {'health': 100, 'energy': 100, 'attack': 100, 'magic' : 100, 'speed': 100}  #Upgrade cost dictionary, changes with each upgrade
-		self.health = self.stats['health'] * 0.5 #Health stat changes with respect to dictionary
+		### Changed so that you start with 100 percent of your health ###
+		self.health = self.stats['health'] * 1 #Health stat changes with respect to dictionary
 		self.energy = self.stats['energy'] * 0.8 #Energy stat changes with stats dictionary
-		self.exp = 5000
+		### The player now starts with no exp ###
+		self.exp = 0
 		self.speed = self.stats['speed']  #Speed stat changes with dictionary, as it is updated by upgrades
 
 		# damage timer, acts as an indirect limit to the amount of damage the character can take for a given time
@@ -107,19 +109,20 @@ class Player(Entity):
 			# movement input, statements update the vertical and horizontal movements separately
 			#so that the character is able to move diagonally (Both vertically and horizontally at the same time
 			
-			if keys[pygame.K_UP]:  #Input up key from the player
+			### Changed the movement keys from the arrow keys to w, s, a and d ###
+			if keys[pygame.K_w]:  #Input up key from the player
 				self.direction.y = -1   #Updates the coordinate of the player to move up, is negative because the player starts the game facing down, which is the positive direction
 				self.status = 'up'    #Sets status of the player to be up, changing the sprite used
-			elif keys[pygame.K_DOWN]: #Input down key from player
+			elif keys[pygame.K_s]: #Input down key from player
 				self.direction.y = 1  #Moves the player down by 1 unit in the map, defined in settings module
 				self.status = 'down'  #Sets the state of the character, all animations from attacking idling and moving occur in the down direction
 			else:
 				self.direction.y = 0  #For when no vertical input is given but movement is still happening
 
-			if keys[pygame.K_RIGHT]: #Input right key from player to move right
+			if keys[pygame.K_d]: #Input right key from player to move right
 				self.direction.x = 1  #Right is arbitrarily set as the positive direction on the horizontal axis, moves character right
 				self.status = 'right' #Sets status to use right facing sprite animations
-			elif keys[pygame.K_LEFT]:
+			elif keys[pygame.K_a]:
 				self.direction.x = -1  #Moves left on the horizontal axis
 				self.status = 'left' #Sets status to use left facing sprite animations
 			else:
@@ -136,7 +139,8 @@ class Player(Entity):
 			# magic input, for attacks regarding magic, which can be used a finite number of times based on the characters energy stat
 			#Data for these variables are from another module
 			#This makes the initial if statement untrue, and closes off all input for a short time (During cooldown)
-			if keys[pygame.K_LCTRL]:
+			### Changed the key for magic from left control to return ###
+			if keys[pygame.K_RETURN]:
 				self.attacking = True  #Attack state triggers, shutting off all potential input through this function for a short time
 				self.attack_time = pygame.time.get_ticks()      #Cooldown for magic attacks, based on type of magic
 				style = list(magic_data.keys())[self.magic_index]    #Used to show a certain sprite based on the type of magic
@@ -144,7 +148,8 @@ class Player(Entity):
 				cost = list(magic_data.values())[self.magic_index]['cost']    #Magic costs an amount of energy, based on the type of magic
 				self.create_magic(style,strength,cost)        #Creates a sprite, reduces energy, and damages enemies based on values found above
 
-			if keys[pygame.K_q] and self.can_switch_weapon:  #Allows change of weapon if the character has not recently switched its weapon
+			### Changed the swap weapon key from q to left shift ###
+			if keys[pygame.K_LSHIFT] and self.can_switch_weapon:  #Allows change of weapon if the character has not recently switched its weapon
 			
 				#Provides cooldown time for switching weapons, where players can still provide other input, but not switch weapons again
 				self.can_switch_weapon = False
@@ -161,7 +166,8 @@ class Player(Entity):
 				#This results in a different sprite with different stats (Cooldown, hitbox, damage, etc)
 				self.weapon = list(weapon_data.keys())[self.weapon_index]
 
-			if keys[pygame.K_e] and self.can_switch_magic:
+			### Changed the swap magic key from e to right shift ###
+			if keys[pygame.K_RSHIFT] and self.can_switch_magic:
 			#Allows the player to switch between magic types (2 total) when they hit the appropriate button (e) and the cooldown for switching is reached
 			
 			#Works the exact same as weapon switching, where the player can still provide input, but not change magic for a short time
@@ -291,3 +297,7 @@ class Player(Entity):
 		self.move(self.stats['speed'])
 		#Lowest priority to updating stats of player. Triggers energy rejuvenation, which does not depend on the input of the player and is refreshed every time the character is updated
 		self.energy_recovery()
+
+		### Changed so that if player health ever reached zero the game will quit and you will need to try again ###
+		if self.health <= 0:
+			quit()

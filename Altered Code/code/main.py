@@ -17,7 +17,8 @@ class Game:
 		# this line establishes the display screen for the game
 		self.screen = pygame.display.set_mode((WIDTH,HEIGTH)) 
 		#this line produces a caption for the game that says 'Zelda'
-		pygame.display.set_caption('Zelda') 
+		### Changed the title of the game window ###
+		pygame.display.set_caption('CHE120 Project') 
 		#this line makes a clock that runs in game
 		self.clock = pygame.time.Clock() 
 		# Creates the game level (graphics and positions)
@@ -51,7 +52,7 @@ class Game:
 					if event.key == pygame.K_m: 
 						#this code allows the player to scroll through a menu selection screen
 						self.level.toggle_menu() 
-						
+
 			# this line seems serve as a background colour for the display screen, which is apparently the colour of water
 			self.screen.fill(WATER_COLOR) 
 			#this line seems run the layout for the level that the user plays on

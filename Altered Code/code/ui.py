@@ -12,6 +12,7 @@ class UI:
 
 		# bar setup 
         #The resource bar interface is shown, using the dimensions and values to fill and display the resource bars
+		# The numbers are the positions of the bars
 		self.health_bar_rect = pygame.Rect(10,10,HEALTH_BAR_WIDTH,BAR_HEIGHT)
 		self.energy_bar_rect = pygame.Rect(10,34,ENERGY_BAR_WIDTH,BAR_HEIGHT)
 
