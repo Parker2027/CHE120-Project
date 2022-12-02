@@ -69,7 +69,7 @@ class Level:
 		layouts = {
 			'boundary': import_csv_layout('../map/newmap_FloorBlocks.csv'),
 			'grass': import_csv_layout('../map/newmap_grass.csv'),
-			'object': import_csv_layout('../map/map_Objects.csv'),
+			'object': import_csv_layout('../map/newmap_Objects.csv'),
 			'entities': import_csv_layout('../map/newmap_Entities.csv')
 		}
 		# Level graphics are defined by the following files
@@ -95,12 +95,14 @@ class Level:
 						# The image for grass is selcted at random
 						if style == 'grass':
 							# Choses a random grass tile image for any tile set to be grass
-							random_grass_image = choice(graphics['grass'])
-							Tile(
-								(x,y),
-								[self.visible_sprites,self.obstacle_sprites,self.attackable_sprites],
-								'grass',
-								random_grass_image)
+							### Changed so that grass only appears in the warm half of the map ###
+							if col == '182':
+								random_grass_image = choice(graphics['grass'])
+								Tile(
+									(x,y),
+									[self.visible_sprites,self.obstacle_sprites,self.attackable_sprites],
+									'grass',
+									random_grass_image)
 						
 						# The image for an object depends on what object is there
 						if style == 'object':
