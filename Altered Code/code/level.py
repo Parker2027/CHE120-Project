@@ -67,8 +67,8 @@ class Level:
 	def create_map(self):
 		# Map layout is defined with the following csv files
 		layouts = {
-			'boundary': import_csv_layout('../map/map_FloorBlocks.csv'),
-			'grass': import_csv_layout('../map/map_Grass.csv'),
+			'boundary': import_csv_layout('../map_FloorBlocks.csv'),
+			'grass': import_csv_layout('../newmap_grass.csv'),
 			'object': import_csv_layout('../map/map_Objects.csv'),
 			'entities': import_csv_layout('../map/map_Entities.csv')
 		}
