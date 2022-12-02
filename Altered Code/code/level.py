@@ -271,7 +271,7 @@ class YSortCameraGroup(pygame.sprite.Group):
 
 		# creating the floor
 		# Loads the floor image as the bottomost layer of graphics (evrything else is superimposed into it)
-		self.floor_surf = pygame.image.load('../graphics/tilemap/ground.png').convert()
+		self.floor_surf = pygame.image.load('../graphics/tilemap/new_floor.png').convert()
 		# The topleft of the map is (0,0) which is the same as the top left of the pygame window
 		self.floor_rect = self.floor_surf.get_rect(topleft = (0,0))
 
