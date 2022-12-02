@@ -70,7 +70,7 @@ class Level:
 			'boundary': import_csv_layout('../map/newmap_FloorBlocks.csv'),
 			'grass': import_csv_layout('../map/newmap_grass.csv'),
 			'object': import_csv_layout('../map/map_Objects.csv'),
-			'entities': import_csv_layout('../map/map_Entities.csv')
+			'entities': import_csv_layout('../map/newmap_Entities.csv')
 		}
 		# Level graphics are defined by the following files
 		graphics = {
