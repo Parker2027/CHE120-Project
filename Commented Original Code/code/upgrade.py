@@ -5,6 +5,7 @@ class Upgrade:
 	def __init__(self,player):
 
 		# general setup
+        #This retrieves the player stats in order for them to be displayed in the item menu
 		self.display_surface = pygame.display.get_surface()
 		self.player = player
 		self.attribute_nr = len(player.stats)
@@ -13,18 +14,20 @@ class Upgrade:
 		self.font = pygame.font.Font(UI_FONT, UI_FONT_SIZE)
 
 		# item creation
+        #This allows for the items to be displayed, retrieving the dimensions of the item menu
 		self.height = self.display_surface.get_size()[1] * 0.8
 		self.width = self.display_surface.get_size()[0] // 6
 		self.create_items()
 
 		# selection system 
+        #This allows the player to individually select the items with the same controls used to move the player character
 		self.selection_index = 0
 		self.selection_time = None
 		self.can_move = True
 
 	def input(self):
 		keys = pygame.key.get_pressed()
-
+#This allows for players to use their EXP and upgrade their character, being able to switch between different player statistics and choose which one to increase or decrease
 		if self.can_move:
 			if keys[pygame.K_RIGHT] and self.selection_index < self.attribute_nr - 1:
 				self.selection_index += 1
@@ -39,7 +42,7 @@ class Upgrade:
 				self.can_move = False
 				self.selection_time = pygame.time.get_ticks()
 				self.item_list[self.selection_index].trigger(self.player)
-
+#The cooldown of which the player remains in the selection screen
 	def selection_cooldown(self):
 		if not self.can_move:
 			current_time = pygame.time.get_ticks()
@@ -48,7 +51,7 @@ class Upgrade:
 
 	def create_items(self):
 		self.item_list = []
-
+#This orients the items within the players inventory, placing them adjacent to one another in the menu
 		for item, index in enumerate(range(self.attribute_nr)):
 			# horizontal position
 			full_width = self.display_surface.get_size()[0]
@@ -69,6 +72,7 @@ class Upgrade:
 		for index, item in enumerate(self.item_list):
 
 			# get attributes
+            #This displays the details of each attribute the player can upgrade such as the cost, maximum value, and the name of the attribute
 			name = self.attribute_names[index]
 			value = self.player.get_value_by_index(index)
 			max_value = self.max_values[index]
@@ -85,6 +89,7 @@ class Item:
 		color = TEXT_COLOR_SELECTED if selected else TEXT_COLOR
 
 		# title
+        #Creates a title for each item
 		title_surf = self.font.render(name,False,color)
 		title_rect = title_surf.get_rect(midtop = self.rect.midtop + pygame.math.Vector2(0,20))
 
@@ -99,22 +104,25 @@ class Item:
 	def display_bar(self,surface,value,max_value,selected):
 
 		# drawing setup
+        #This determines what orientation the bars will be in the upgrade menu
 		top = self.rect.midtop + pygame.math.Vector2(0,60)
 		bottom = self.rect.midbottom - pygame.math.Vector2(0,60)
 		color = BAR_COLOR_SELECTED if selected else BAR_COLOR
 
 		# bar setup
+        #This converts the players statistics into the empty bars where the character attributes will be placed
 		full_height = bottom[1] - top[1]
 		relative_number = (value / max_value) * full_height
 		value_rect = pygame.Rect(top[0] - 15,bottom[1] - relative_number,30,10)
 
 		# draw elements
+        #This is the detailing added to the attribute bars, allowing for a colour that differentiates the attribute and th emaximum attribute possible
 		pygame.draw.line(surface,color,top,bottom,5)
 		pygame.draw.rect(surface,color,value_rect)
 
 	def trigger(self,player):
 		upgrade_attribute = list(player.stats.keys())[self.index]
-
+#This allows for the player to utilize their EXP when selecting attributes to upgrade, precautions made so that each upgrade cost is met
 		if player.exp >= player.upgrade_cost[upgrade_attribute] and player.stats[upgrade_attribute] < player.max_stats[upgrade_attribute]:
 			player.exp -= player.upgrade_cost[upgrade_attribute]
 			player.stats[upgrade_attribute] *= 1.2
@@ -122,7 +130,7 @@ class Item:
 
 		if player.stats[upgrade_attribute] > player.max_stats[upgrade_attribute]:
 			player.stats[upgrade_attribute] = player.max_stats[upgrade_attribute]
-
+#This displays the statistics of the characters, determining the colours and dimensions of the attribute bars
 	def display(self,surface,selection_num,name,value,max_value,cost):
 		if self.index == selection_num:
 			pygame.draw.rect(surface,UPGRADE_BG_COLOR_SELECTED,self.rect)
