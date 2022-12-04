@@ -68,7 +68,7 @@ class Entity(pygame.sprite.Sprite):
 						# moving up 
 						#this if statement is for the situation where the entity is moving in the upward direction, as stated by the original programmer
 						self.hitbox.top = sprite.hitbox.bottom 
-						#this line seems to make the entity dprite move in the opposite direction of the hitbox, when it moves in the uoward direction
+						#this line seems to make the entity sprite move in the opposite direction of the hitbox, when it moves in the uoward direction
 
 	def wave_value(self): 
 		#this function seems to produce a wave for the entity

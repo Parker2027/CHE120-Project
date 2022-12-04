@@ -20,7 +20,7 @@ class Game:
 		### Changed the title of the game window ###
 		pygame.display.set_caption('CHE120 Project') 
 		#this line makes a clock that runs in game
-		self.clock = pygame.time.Clock() 
+		self.clock = pygame.time.Clock()
 		# Creates the game level (graphics and positions)
 		self.level = Level() 
 		

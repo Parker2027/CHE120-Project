@@ -9,8 +9,11 @@
 
 import pygame 
 from settings import *
+import settings as settings
 from support import import_folder
 from entity import Entity
+### Imports Enemy class for enemy damage values ###
+from enemy import *
 
 class Player(Entity):
 # A class for functions regarding everything the character can do
@@ -59,9 +62,10 @@ class Player(Entity):
 		### Changed so that you start with 100 percent of your health ###
 		self.health = self.stats['health'] * 1 #Health stat changes with respect to dictionary
 		self.energy = self.stats['energy'] * 0.8 #Energy stat changes with stats dictionary
-		### The player now starts with no exp ###
-		self.exp = 0
+		### The player now starts with 1000 exp ###
+		self.exp = 1000
 		self.speed = self.stats['speed']  #Speed stat changes with dictionary, as it is updated by upgrades
+		
 
 		# damage timer, acts as an indirect limit to the amount of damage the character can take for a given time
 		self.vulnerable = True   #By default, character is able to take damage
@@ -182,6 +186,11 @@ class Player(Entity):
 
 				#Updates self.magic to use different data from the magic data in the settings module
 				self.magic = list(magic_data.keys())[self.magic_index]
+
+			### Press Escape to quit the game ###
+			if keys[pygame.K_ESCAPE]:
+				pygame.quit()
+				quit()
 
 	def get_status(self):
 	#This function finds the non directional state of the character and updates the characters status to read its state
