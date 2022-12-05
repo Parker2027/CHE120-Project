@@ -1,4 +1,4 @@
-# This was commented by Wafeeque ()
+# This was commented by Wafeeq Alam (21026755)
 # game setup
 #Width and Height of game display
 WIDTH    = 1280	
