@@ -1,3 +1,4 @@
+# This was commented by Wafeeque ()
 # game setup
 #Width and Height of game display
 WIDTH    = 1280	

@@ -1,3 +1,4 @@
+# This was commented by Nate Barret (21027169)
 #this line of code exists to import the pygame file
 import pygame 
 #this line of code seems to initiate the contents of the pygame file

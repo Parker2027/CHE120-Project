@@ -1,3 +1,4 @@
+# This was commented by Nate Barret (21027169)
 # this line imports code from the pygame file
 import pygame 
 

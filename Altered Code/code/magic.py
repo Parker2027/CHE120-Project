@@ -1,3 +1,4 @@
+# This was commented by Wafeeque ()
 import pygame
 from settings import *
 from random import randint

@@ -1,3 +1,4 @@
+# This was commented by Parker Bray-Jones (21017290)
 # Imports the pygame module
 import pygame 
 # Imports everything from the file settings.py

@@ -1,3 +1,4 @@
+# This was commented by Nate Barret (21027169)
 # this line imports the pygame file in order for the game's visuals and a sys file
 import pygame, sys 
 # this line seems to call up some code from a settings file elsewhere in this game's file

@@ -1,3 +1,4 @@
+# This was commented by Nate Barret (21027169)
 import pygame 
 # this line imports the pygame file for the entire game file to run
 from math import sin 

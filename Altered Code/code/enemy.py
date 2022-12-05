@@ -1,3 +1,4 @@
+# This was commented by Nate Barret (21027169)
 import pygame 
 #this line is imports a pygame file
 from settings import * 
