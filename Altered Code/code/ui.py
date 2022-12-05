@@ -1,4 +1,4 @@
-
+# This was commented by Wafeeq Alam (21026755)
 import pygame
 from settings import * 
 
