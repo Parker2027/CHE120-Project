@@ -57,8 +57,10 @@ class Player(Entity):
 
 		# stats, can be changed through an upgrade menu
 		self.stats = {'health': 100,'energy':60,'attack': 10,'magic': 4,'speed': 5}   #Dictionary containing starting stats for the character
-		self.max_stats = {'health': 300, 'energy': 140, 'attack': 20, 'magic' : 10, 'speed': 10}  #Dictionary containing maximum stats for character
-		self.upgrade_cost = {'health': 100, 'energy': 100, 'attack': 100, 'magic' : 100, 'speed': 100}  #Upgrade cost dictionary, changes with each upgrade
+		### Increased max stats to balance against harder enemies ###
+		self.max_stats = {'health': 1500, 'energy': 800, 'attack': 200, 'magic' : 50, 'speed': 10}  #Dictionary containing maximum stats for character
+		### Changed upgrade cost to balance increased maximums ###
+		self.upgrade_cost = {'health': 75, 'energy': 75, 'attack': 50, 'magic' : 50, 'speed': 100}  #Upgrade cost dictionary, changes with each upgrade
 		### Changed so that you start with 100 percent of your health ###
 		self.health = self.stats['health'] * 1 #Health stat changes with respect to dictionary
 		self.energy = self.stats['energy'] * 0.8 #Energy stat changes with stats dictionary
